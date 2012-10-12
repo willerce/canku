@@ -7,6 +7,13 @@
 
 (function(){
 
+  $(window).scroll(function () {
+    var top = $(this).scrollTop();
+    var top = 66 - top;
+    if(top<0) top = 0;
+    $('#cart').css('top',top+"px");
+  });
+
   var storage = window.localStorage;
   var shop_id = $('#shop_id').val();
   var shop_name = $('#shop_name').val();
@@ -106,7 +113,7 @@
             if(data.result=="success"){
               //清空localstorage
               storage.removeItem(shop_id);
-              $('#confirm-list').empty().html('订单提交成功。<span class="timeout">6</span> 秒后 <a href="/">跳转到首页</a>');
+              $('#confirm-list').empty().html('<div style="text-align:center;"><p>订单提交成功，你的运气值：'+data.luck+'点</p><p>倒计时 <span class="timeout">6</span> 秒后 <a href="/today">跳转到今日订单</a></p></div>');
 
               var totaltime = 0;
 
@@ -115,7 +122,7 @@
                   totaltime++;
                   $('#confirm-list .timeout').text(parseInt($('#confirm-list .timeout').text())-1);
                 }else{
-                  location.href = "/";
+                  location.href = "/today";
                 }
               }, 1000)
 
@@ -133,7 +140,7 @@
   function create_car_item(food){
     return '<tr id="car-'+food.id+'" data-id="'+food.id+'"><td class="ttl">'+food.name+'</td><td width="40"><select class="cart_o_num">'+
       '<option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>'+
-      '<option value="5">5</option><option value="6">6</option><option value="7">7</option><optionvalue="8">8</option></select></td><td width="30">'+food.price+'</td>'+
+      '<option value="5">5</option><option value="6">6</option><option value="7">7</option><optionvalue="8">8</option></select></td><td class="del" width="30">'+food.price+'</td>'+
       '<td width="30"><a id="cart_del_'+food.id+'" class="del_btn" href="javascript:void(0);">删除</a></td></tr>';
   }
 

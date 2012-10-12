@@ -11,6 +11,7 @@ var admin = require('./routes/admin');
 module.exports = function(app){
 
   app.get('/',  user.auth, main.index);
+  app.get('/today', user.auth, main.today);
   app.get('/shop', user.auth, main.shop);
   app.get('/shop/:id', user.auth, main.shop_item);
   app.post('/submit_order', user.auth, main.submit_order);

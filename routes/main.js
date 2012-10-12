@@ -12,15 +12,26 @@ db.bind('order');
 db.bind('caller');
 
 // URL /
-exports.index = function(req, res, next){
+exports.today = function(req, res, next){
   db.order.find({time:{$gt:dateformat(new Date(), 'yyyy-mm-dd ')+"00:00:00",$lt:dateformat(new Date(new Date().getTime() + 24 * 60 * 60 * 1000), 'yyyy-mm-dd ')+"00:00:00"}}).toArray(function(err, orders){
     if(!err){
       var total = 0.0;
       var num = 0;
       var dian = [];
+      var minLuck = {
+        luck : 100,
+      };
       for(var i in orders){
         total += orders[i].total;
+
+        //统计各种美食数量
         for(var j in orders[i].order){
+
+          //找出运气最差的
+          if(orders[i].luck<minLuck.luck){
+            minLuck = orders[i];
+          }
+
           num += parseInt(orders[i].order[j].num);
           if(dian[orders[i].order[j].id]==undefined){
             dian[orders[i].order[j].id] = {name:orders[i].order[j].name, num : parseFloat(orders[i].order[j].num)};
@@ -29,20 +40,20 @@ exports.index = function(req, res, next){
           }
         }
       }
-      res.render('index', { orders : orders , total: total, num : num, dian : dian});
+      res.render('today', { orders : orders , total: total, num : num, dian : dian, minLuck : minLuck});
     }else{
-      res.render('index', { eror: 'error' });
+      res.render('today', { eror: 'error' });
     }
   });
 };
 
 // URL /shop
-exports.shop = function(req, res, next){
+exports.index = function(req, res, next){
   //获取今天的星期
 
   db.shop.find().toArray(function(err, shops){
     if(!err){
-      res.render('shop', {'shops':shops})
+      res.render('index', {'shops':shops})
     }else{
       next();
     }
@@ -74,6 +85,9 @@ exports.shop_item = function(req, res, next){
 // POST URL: /submit_order
 exports.submit_order = function(req, res) {
 
+  //计算运气
+  var luck = Math.floor(Math.random() * 100);
+
   //获取订单
   var order_list = JSON.parse(req.body.list);
   var shop_id = req.body.shop_id;
@@ -84,12 +98,11 @@ exports.submit_order = function(req, res) {
     total = total + ( parseFloat(order_list[i].price) * parseInt(order_list[i].num));
   }
 
-
   //插入订单
-  db.order.insert({shop_id: shop_id, shop_name: shop_name, user_id:req.session.user._id, user_name: req.session.user.name, time : dateformat(new Date(), 'yyyy-mm-dd hh:MM:ss'), total : total,  order: order_list}, function(err, result){
+  db.order.insert({shop_id: shop_id, shop_name: shop_name, user_id:req.session.user._id, user_name: req.session.user.name, time : dateformat(new Date(), 'yyyy-mm-dd hh:MM:ss'), total : total,  order: order_list, luck : luck}, function(err, result){
     if(!err){
       console.log(result);
-      res.send('{"result":"success"}');
+      res.send('{"result":"success","luck":"'+luck+'"}');
     }else{
       console.log(err);
       res.send('{"result":"error"}');
