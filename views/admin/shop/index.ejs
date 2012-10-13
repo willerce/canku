@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+  <title>添加餐馆</title>
+</head>
+<body>
+  <h2>店铺列表</h2>
+  <ul>
+  <% shops.forEach(function(shop){ %>
+    <li><%=shop.name%> <a href="/admin/shop/edit/<%=shop._id %>">编辑</a> | <a href="/admin/food/add?shop_id=<%=shop._id %>">添加美食</a></li>
+  <% }) %>
+  </ul>
+  <div>
+    <a href="/admin/shop/add">添加店铺</a>
+  </div>
+</body>
+</html>

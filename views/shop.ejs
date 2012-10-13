@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+  <title>餐库</title>
+  <link href="/css/reset.css" rel="stylesheet" type="text/css" />
+  <link href="/css/style.css" rel="stylesheet" type="text/css" />
+  <script src="/js/jquery.js" type="text/javascript"></script>
+  <!--[if IE]><script src="/js/html5.js"></script><![endif]-->
+</head>
+<body>
+<!--[if lte IE 6]><div class="fuck-ie6">你妹啊，还用IE6？</div><![endif]-->
+<nav class="nav">
+  <div title="餐库" class="logo"><span>餐库</span></div>
+  <ul>
+    <li id="li_home"><a href="/">首页<span>关注的收藏夹，最新动态</span><i></i></a></li>
+    <li id="li_shop" class="active"><a href="/shop">餐馆<span>全部的餐馆都在这里</span><i></i></a></li>
+  </ul>
+  <div class="line"></div>
+</nav>
+<section class="main clearfix">
+  <div class="login-info">
+    <% if (locals.session.user) { %>
+    <span><%=locals.session.user.name%> &nbsp;/&nbsp;<a href="/order">我的历史订单</a>&nbsp;/&nbsp;<a href='/logout'>退出</a></span>
+    <% } else { %>
+    <span><a href='/register'>注册</a> |
+    <a href='/login'>登录</a></span>
+    <% } %>
+  </div>
+  <nav class="site-nav">
+    <a href="/">餐库</a><i>›</i><a href="/shop">全部餐馆</a>
+  </nav>
+  <h1 class="page-title">全部餐馆</h1>
+  <section class="fav clearfix">
+    <% shops.forEach(function(shop){ %>
+    <div class="food-item">
+      <h3><a href="/shop/<%=shop._id%>"><%=shop.name%></a></h3>
+      <p><em>地址：</em><%=shop.address%><br /><em>电话：</em><%=shop.tel%></p>
+      <a href="/shop/<%=shop._id%>"><img src="/images/shop/default.png" /></a>
+      <span></span>
+    </div>
+    <% }) %>
+  </section>
+</section>
+</body>
+</html>
