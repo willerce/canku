@@ -18,7 +18,6 @@ exports.index = function(req, res, next){
       var total = 0.0;
       var num = 0;
       var dian = [];
-
       for(var i in orders){
         total += orders[i].total;
         for(var j in orders[i].order){
@@ -30,20 +29,7 @@ exports.index = function(req, res, next){
           }
         }
       }
-      db.caller.find({date:{$lte:dateformat(new Date(), 'yyyymmdd')}}).sort({date: -1}).limit(1).toArray(function(err, result){
-        if(!err){
-          var canYao = false;
-          var do_user_name = "";
-          if((result.length>0&&result[0].do_user_name==req.session.user.name)||req.session.user.name=="admin"){
-            if(result.length>0 && result[0].date==dateformat(new Date(), 'yyyymmdd')){
-              do_user_name = result[0].do_user_name;
-            }else{
-              canYao = true;
-            }
-          }
-          res.render('index', { orders : orders , total: total, num : num, dian : dian, canYao: canYao, do_user_name : do_user_name});
-        }
-      });
+      res.render('index', { orders : orders , total: total, num : num, dian : dian});
     }else{
       res.render('index', { eror: 'error' });
     }
