@@ -9,14 +9,14 @@ input, label { vertical-align: middle }
 label { line-height: 30px; cursor: pointer }
 input, textarea { display: inline-block; padding: 0 5px; border: 1px solid #d3d3d3;  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1) inset; font-size: 12px; line-height: 31px; height: 31px; }
 textarea { overflow: auto; height: auto; vertical-align: top; resize: none; padding: 5px; line-height: 1.5em }
-.btn { display: inline-block; padding: 5px 10px; width: auto; min-height: 32px; border: 0; background: #2bb4d0; color: #fff; vertical-align: middle; text-align: center; font-weight: 700; font-size: 14px; cursor: pointer }
+.btn { display: inline-block; padding: 5px 10px; width: auto; min-height: 32px; border: 0; background: #c02116; color: #fff; vertical-align: middle; text-align: center; font-weight: 700; font-size: 14px; cursor: pointer }
 .btn:hover { background: #AA2105; color: #fff; text-decoration: none; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3) }
 .btn:focus, .btn:active { border: 0;  text-decoration: none }
 
 a { outline: 0 none; color: #c02116; text-decoration: none }
 a:focus { outline: 0 none }
 a:hover, a:active { outline: 0 none; text-decoration: underline }
-body { position: relative; color: #333; text-align: left; font-weight: normal; line-height: 20px;overflow: hidden}
+body { position: relative; color: #333; text-align: left; font-weight: normal; line-height: 20px;}
 .clearfix { zoom: 1; _height: 1px }
 .clearfix:after { clear: both; display: block; visibility: hidden; height: 0; content: "." }
 .hide { display: none }
@@ -64,13 +64,13 @@ body { position: relative; color: #333; text-align: left; font-weight: normal; l
 .nav li a:hover { background: #a81f13; color: #fff; text-decoration: none }
 .nav li a span { display: block; color: #999; font-size: 12px }
 .nav li.nav_item_my:hover #nav_my { display: block }
-#nav_my { position: absolute; top: 40px; right: 0; z-index: 100; display: none; width: 90px; border: 1px solid #BBB; background: white; background-clip: padding-box; box-shadow: 0 1px 6px rgba(0, 0, 0, 0.25) }
+#nav_my { position: absolute; top: 45px; right: 0; z-index: 100; display: none; width: 90px; border: 1px solid #ddd; background: #fff; background-clip: padding-box;  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1)}
 #nav_my li { float: none; padding: 0 15px }
 #nav_my li:hover { background: #eee; color: #666 }
 #nav_my li a { margin-left: 0; padding: 0; color: #333; font-weight: normal; line-height: 2em }
 #nav_my li a:hover { background: 0 }
 
-#footer { border-top: 1px solid #ccc; padding-top: 10px; color: #999; margin-top: 20px; }
+#footer { border-top: 1px dashed #ccc; padding-top: 10px; color: #999; margin-top: 20px; }
 
 .main { position: relative; overflow: hidden; background: #FFF }
 .main h2 { margin-bottom: 30px; border-bottom: 1px solid #eaeaea; text-align: center }
@@ -143,6 +143,10 @@ body { position: relative; color: #333; text-align: left; font-weight: normal; l
 .buy-price { float: right }
 .buy-btn { margin: 0 auto; padding: 3px 5px; height: 30px; background: #c63a3a; color: #fff; text-align: center; font-weight: bold; line-height: 30px }
 .buy-btn:hover { background: #84201f; cursor: pointer }
+
+.today_null {}
+.today_null .txt { padding: 15px 0 20px 135px; background: #fff url('../img/empty.gif') no-repeat 10px 5px ;}
+.today_null .txt h3{font-size: 30px; line-height: 30px; margin-bottom: 20px;;}
 #today-list { width: 55% }
 #today-analytics { float: right; width: 40% }
 .today-tb { float: left }

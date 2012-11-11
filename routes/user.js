@@ -37,7 +37,7 @@ exports.login = function (req, res) {
 
     if (reMail.test(account)) {
       //使用邮箱登录
-      query = {'email':account, 'password':password}
+      query = {'email':account.toLowerCase(), 'password':password}
     } else {
       //使用名号登录
       query = {'name':account, 'password':password}
@@ -84,7 +84,7 @@ exports.register = function (req, res) {
 
     //获取用户的输入
     var name = req.body.name;
-    var email = req.body.email;
+    var email = req.body.email.toLowerCase();
     var password = req.body.password;
 
     //验证用户空输入
@@ -107,7 +107,7 @@ exports.register = function (req, res) {
 
               // 密码进行MD5
             password = util.md5(password);
-            var reg_time = dateformat(new Date(), 'yyyy-mm-dd HH-MM-ss');
+            var reg_time = dateformat(new Date(), 'yyyy-mm-dd HH:MM:ss');
 
             // 向数据库保存用户的数据，并进行 session 保存
             db.user.insert({'name':name, 'email':email, reg_time:reg_time, 'password':password}, function (err, user) {

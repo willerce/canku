@@ -141,7 +141,7 @@
     return '<tr id="car-'+food.id+'" data-id="'+food.id+'"><td class="ttl">'+food.name+'</td><td width="40"><select class="cart_o_num">'+
       '<option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>'+
       '<option value="5">5</option><option value="6">6</option><option value="7">7</option><optionvalue="8">8</option></select></td><td class="del" width="30">'+food.price+'</td>'+
-      '<td width="30"><a id="cart_del_'+food.id+'" class="del_btn" href="javascript:void(0);">删除</a></td></tr>';
+      '<td width="30"><a id="cart_del_'+food.id+'" class="del_btn" href="javascript:void(0);" title="不要">删除</a></td></tr>';
   }
 
 
