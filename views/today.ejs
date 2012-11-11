@@ -1,95 +1,81 @@
-<!DOCTYPE HTML>
-<html lang="zh-cn">
-<head>
-    <meta charset="UTF-8">
-    <title>餐库</title>
-    <link href="/css/reset.css" rel="stylesheet" type="text/css"/>
-    <link href="/css/style.css" rel="stylesheet" type="text/css"/>
-    <script src="/js/jquery.js" type="text/javascript"></script>
-</head>
-<body>
-<header id="head">
-    <nav class="nav">
-        <div class="wap">
-            <div title="餐库" class="logo"><a href="/"><span>餐库</span></a></div>
-            <ul>
-                <li><a href="/today">今日订单</a></li>
-                <% if (locals.session.user) { %>
-                <li class="nav_item_my">
-                    <a href='/logout'><%=locals.session.user.name%></a>
-                    <ul id="nav_my">
-                        <li><a href="/order">历史订单</a></li>
-                        <li><a href="/logout">退出</a></li>
-                    </ul>
-                </li>
-                <% } %>
-            </ul>
-        </div>
-    </nav>
-</header>
+<% include header %>
 <div class="wap">
-    <h1 class="page-title">今日已点订单<span style="float: right;"><strong><%=minLuck.user_name%></strong>喂人民服务</span></h1>
-    <section class="main clearfix">
-        <section class="wrap">
-            <table id="today-list" class="today-tb" cellpadding="0" cellspacing="0">
-                <thead>
-                <tr>
-                    <th class="name">用户名</th>
-                    <th class="food">订单内容</th>
-                    <th class="random">运气值</th>
-                    <th class="total">共计</th>
-                </tr>
-                </thead>
-                <tbody>
-                <% orders.forEach(function(order){%>
-                <tr data-id="<%=order._id%>">
-                    <td class="name user-<%=order.user_id%>"><%=order.user_name%></td>
-                    <td class="food">
-                        <ul>
-                            <% order.order.forEach(function(food){ %>
-                            <li><%=food.name%> - <%=food.price%>元 - <%=food.num%> 份</li>
-                            <%})%>
-                        </ul>
-                    </td>
-                    <td class="luck" data-luck="<%=order.luck%>"><div class="bar" style="width:<%=order.luck*0.9%>px"><%=order.luck%></div></td>
-                    <td class="total">
-                        ￥<%=order.total%>
-                    </td>
-                </tr>
-                <%})%>
-                </tbody>
-                <tfoot>
-                <tr style="text-align: right;background: #f9f9f9;">
-                    <td colspan="4">
-                        共计 <b><%=num%></b> 份， <b><%=total%></b> 元
-                    </td>
-                </tr>
-                </tfoot>
-            </table>
-            <table id="today-analytics" class="today-tb">
-                <thead>
-                <tr>
-                    <th>订餐统计清单</th>
-                </tr>
-                </thead>
-                <tbody>
-                <% for(key in dian){%>
-                <tr>
-                    <td><%=dian[key].name%> - <%=dian[key].num%>份</td>
-                </tr>
-                <%}%>
-                </tbody>
-                <tfoot>
-                <tr style="text-align: right;background: #f9f9f9;">
-                    <td colspan="3">
-                        共计 <b><%=num%></b> 份， <b><%=total%></b> 元
-                    </td>
-                </tr>
-                </tfoot>
-            </table>
-            <div class="clearfix"></div>
-        </section>
+  <% if (!error) {%>
+  <% for(var key in group){ var orders = group[key];%>
+  <div id="shop-<%=orders.shop._id%>">
+  <h1 class="page-title">
+    <strong><%=orders.shop.name%></strong>
+    <span class="shop_tel">电话：<%=orders.shop.tel%></span>
+    <span class="shop_address">地址：<%=orders.shop.address%></span>
+    <%if(orders.minLuck.user_name){%>
+    <span style="float: right;">目测，由 <strong><%=orders.minLuck.user_name%></strong>喂人民服务</span><%}%>
+  </h1>
+  <section class="main clearfix" style="margin-bottom: 20px">
+    <section class="inner">
+      <table id="today-list" class="today-tb" cellpadding="0" cellspacing="0">
+        <thead>
+        <tr>
+          <th class="name">用户名</th>
+          <th class="food">订单内容</th>
+          <th class="random">运气值</th>
+          <th class="total">共计</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% orders.orders.forEach(function(order){%>
+        <tr data-id="<%=order._id%>">
+          <td class="name user-<%=order.user_id%>"><%=order.user_name%></td>
+          <td class="food">
+            <ul>
+              <% order.order.forEach(function(food){ %>
+              <li><%=food.name%> - <%=food.price%>元 - <%=food.num%> 份</li>
+              <%})%>
+            </ul>
+          </td>
+          <td class="luck" data-luck="<%=order.luck%>">
+            <div class="bar" style="width:<%=order.luck*0.9%>px"><%=order.luck%></div>
+          </td>
+          <td class="total">
+            ￥<%=order.total%>
+          </td>
+        </tr>
+        <%})%>
+        </tbody>
+        <tfoot>
+        <tr style="text-align: right;background: #f9f9f9;">
+          <td colspan="4">
+            共计：<b><%=orders.totalPrice%></b> 元
+          </td>
+        </tr>
+        </tfoot>
+      </table>
+      <table id="today-analytics" class="today-tb">
+        <thead>
+        <tr>
+          <th>订餐统计清单</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% for(var key in orders.analytics){%>
+        <tr>
+          <td><%=orders.analytics[key].name%> - <%=orders.analytics[key].num%>份</td>
+        </tr>
+        <%}%>
+        </tbody>
+        <tfoot>
+        <tr style="text-align: right;background: #f9f9f9;">
+          <td colspan="3">
+            <p>共计 <b><%=orders.totalNum%></b> 份， <b><%=orders.totalPrice%></b> 元</p>
+          </td>
+        </tr>
+        </tfoot>
+      </table>
+      <div class="clearfix"></div>
     </section>
+  </section>
+  </div>
+  <%}}else{%>
+  大家还没有订餐。
+  <%}%>
 </div>
-</body>
-</html>
+<% include footer %>

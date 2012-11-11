@@ -1,18 +1,34 @@
-<!DOCTYPE HTML>
-<html lang="zh-cn">
-<head>
-  <meta charset="UTF-8">
-  <title>添加餐馆</title>
-</head>
-<body>
+<% include ../header %>
   <h2>店铺列表</h2>
-  <ul>
-  <% shops.forEach(function(shop){ %>
-    <li><%=shop.name%> <a href="/admin/shop/edit/<%=shop._id %>">编辑</a> | <a href="/admin/food/add?shop_id=<%=shop._id %>">添加美食</a></li>
-  <% }) %>
-  </ul>
-  <div>
-    <a href="/admin/shop/add">添加店铺</a>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>名称</th>
+        <th>电话</th>
+        <th>地址</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% shops.forEach(function(shop){ %>
+      <tr>
+        <td><%=shop.name%></td>
+        <td><%=shop.tel%></td>
+        <td><%=shop.address%></td>
+        <td>
+          <a class="btn btn-primary btn-small" href="/admin/shop/edit/<%=shop._id %>">编辑店铺</a>
+          <a class="btn btn-primary btn-small" href="/admin/food/add?shop_id=<%=shop._id %>">管理美食</a>
+        </td>
+      </tr>
+    <% }) %>
+    </tbody>
+  </table>
+  <div class="actions">
+    <a class="btn btn-primary" href="/admin/shop/add">添加店铺</a>
   </div>
-</body>
-</html>
+  <div>
+    <p><%=today_0%></p>
+    <p><%=today_24%></p>
+    <p><%=week%></p>
+  </div>
+<% include ../footer %>

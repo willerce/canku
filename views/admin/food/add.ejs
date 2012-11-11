@@ -1,48 +1,74 @@
-<!DOCTYPE HTML>
-<html lang="zh-cn">
-<head>
-  <meta charset="UTF-8">
-  <title>添加美食</title>
-</head>
-<body>
-<h2>在【<%=shop.name%>】中添加美食</h2>
-<hr>
-<form method="POST">
-  <div class="item">
-    <label for="name">名称</label>
-    <input type="text" name="name" id="name">
+<% include ../header %>
+<h2>在【<a href="/shop/<%=shop._id%>" target="_blank"><%=shop.name%></a>】中添加美食</h2>
+<div class="">
+  <div class="row">
+    <div class="span5">
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th>分类</th>
+          <th>菜名儿</th>
+          <th>价格</th>
+          <th>时间</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% foods.forEach(function(food){%>
+        <tr>
+          <td><%=food.category%></td>
+          <td><%=food.name%></td>
+          <td><%=food.price%> 元</td>
+          <td><%=week[food.week]%></td>
+          <td><a href="/admin/food/edit/<%=food._id%>" target="_blank">编辑</a></td>
+        </tr>
+        <% })%>
+        </tbody>
+      </table>
+    </div>
+    <div class="span5 well">
+      <form method="POST">
+        <div class="item">
+          <label for="name">名称</label>
+          <input type="text" name="name" id="name">
+        </div>
+        <div class="item">
+          <label for="price">价格</label>
+          <input type="text" name="price" id="price">
+        </div>
+        <div class="item">
+          <label for="week">星期</label>
+          <select name="week" id="week">
+            <option selected="true" value="-1">全部</option>
+            <option value="1">星期一</option>
+            <option value="2">星期二</option>
+            <option value="3">星期三</option>
+            <option value="4">星期四</option>
+            <option value="5">星期五</option>
+            <option value="6">星期六</option>
+            <option value="0">星期日</option>
+          </select>
+        </div>
+        <div class="item">
+          <label for="categories">分类</label>
+          <select name="categories" id="categories">
+            <%
+            var categories = shop.categories.split('|');
+            for(var key in categories){
+            %>
+            <option value="<%=categories[key]%>"><%=categories[key]%></option>
+            <%}%>
+          </select>
+        </div>
+        <div class="item">
+          <label>&nbsp;</label>
+          <button type="submit" class="btn btn-primary">添加美食</button>
+        </div>
+        <div class="item">
+          <input type="hidden" name="id" value="<%=shop._id%>">
+        </div>
+      </form>
+    </div>
   </div>
-  <div class="item">
-    <label for="price">价格</label>
-    <input type="text" name="price" id="price">
-  </div>
-  <div class="item">
-    <label for="price">星期</label>
-    <select name="week" id="week">
-      <option selected="true" value="0">全部</option>
-      <option value="1">星期一</option>
-      <option value="2">星期二</option>
-      <option value="3">星期三</option>
-      <option value="4">星期四</option>
-      <option value="5">星期五</option>
-      <option value="6">星期六</option>
-      <option value="7">星期日</option>
-    </select>
-  </div>
-  <div class="item">
-    <label>&nbsp;</label>
-    <input type="submit" value="提交">
-  </div>
-  <div class="item">
-    <input type="hidden" name="id" value="<%=shop._id%>">
-  </div>
-</form>
-<hr>
-<h2>已经添加的</h2>
-<ul>
-<% foods.forEach(function(food){%>
-  <li><%=food.name%>, <%=food.price%> 元 , <span>星期<%=food.week%></span>, <a href="/admin/food/edit/<%=food._id%>" target="_blank">编辑</a></li>
-<% })%>
-</ul>
-</body>
-</html>
+</div>
+<% include ../footer %>

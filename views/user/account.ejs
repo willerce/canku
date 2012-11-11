@@ -1,0 +1,48 @@
+<% include ../header%>
+<div class="wap columns clearfix">
+  <% if (tip){%>
+  <p class="tip"><%=tip%></p>
+  <script type="text/javascript">
+    $(".tip").delay(3000).slideUp();
+  </script>
+  <%}%>
+  <div class="left">
+    <h1 class="page-title">帐号设置</h1>
+    <section class="main clearfix inner">
+      <form class="session_form" method="POST" id="account">
+        <div class="item">
+          <label for="setting-name">用户名</label>
+          <input name="name" id="setting-name" type="text" maxlength="32" placeholder="常用昵称或真名" class="text-32"
+                 value="<%=user.name%>" required="" />
+        </div>
+        <div class="item">
+          <label for="setting-email">邮箱</label>
+          <input name="email" id="setting-email" type="text" maxlength="32" placeholder="常用邮箱，用于找回密码" class="text-32"
+                 value="<%=user.email%>" required="" />
+        </div>
+        <div class="item">
+          <label for="setting-pwd">原密码</label>
+          <input name="pwd" id="setting-pwd" type="password" maxlength="32" class="text-32" />
+          <em>不修改密码请留空</em>
+        </div>
+        <div class="item">
+          <label for="setting-pwd2">新密码</label>
+          <input name="new_pwd" id="setting-pwd2" type="password" maxlength="32" class="text-32" />
+        </div>
+        <div class="item">
+          <label for="setting-submit"></label>
+          <button class="btn" id="setting-submit" type="submit">提交</button>
+        </div>
+      </form>
+    </section>
+  </div>
+  <div class="right">
+    <div class="block">
+      <ul class="setting">
+        <li><a href="/user/order">› 历史订单</a></li>
+		<li><a href="/user/account">› 帐户设置</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<% include ../footer%>

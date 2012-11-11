@@ -1,0 +1,25 @@
+<% include ../header %>
+<h2>用户的历史订单</h2>
+<% orders.forEach(function(item){ %>
+<table  class="table table-bordered">
+  <tbody>
+  <tr class="hd-row">
+    <td colspan="6">
+      <%=item.time%> 在<a href="/shop/<%=item.shop_id%>"> <%=item.shop_name%> </a>购买的清单
+      <span>共计 <%=item.total%> 元</span>
+    </td>
+  </tr>
+  <% for(var i = 0; i < item.order.length; i++){%>
+  <tr>
+    <td class="shop_name-td"><%=item.order[i].name%></td>
+    <td class="price-td"><%=item.order[i].price%>元</td>
+    <td class="num-td"><%=item.order[i].num%>份</td>
+  </tr>
+  <%}%>
+  </tbody>
+</table>
+<% }) %>
+<!--<div class="actions">
+  <a class="btn btn-primary" href="/admin/shop/add">添加店铺</a>
+</div>-->
+<% include ../footer %>

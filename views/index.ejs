@@ -1,47 +1,15 @@
-<!DOCTYPE HTML>
-<html lang="zh-cn">
-<head>
-    <meta charset="UTF-8">
-    <title>餐库</title>
-    <link href="/css/reset.css" rel="stylesheet" type="text/css"/>
-    <link href="/css/style.css" rel="stylesheet" type="text/css"/>
-    <script type="text/javascript" src="/js/jquery.js"></script>
-    <script type="text/javascript" src="/js/script.js"></script>
-</head>
-<body>
-<header id="head">
-    <nav class="nav">
-        <div class="wap">
-            <div title="餐库" class="logo"><a href="/"><span>餐库</span></a></div>
-            <ul>
-                <li><a href="/today">今日订单</a></li>
-                <% if (locals.session.user) { %>
-                <li class="nav_item_my">
-                    <a href='/logout'><%=locals.session.user.name%></a>
-                    <ul id="nav_my">
-                        <li><a href="/order">历史订单</a></li>
-                        <li><a href="/logout">退出</a></li>
-                    </ul>
-                </li>
-                <% } %>
-            </ul>
-        </div>
-    </nav>
-</header>
+<% include header %>
 <div class="wap">
-    <section class="main clearfix" style="background: none;">
-        <section class="fav clearfix">
-            <% shops.forEach(function(shop){ %>
-            <div class="food-item">
-                <h3><a href="/shop/<%=shop._id%>"><%=shop.name%></a></h3>
-
-                <p><em>地址：</em><%=shop.address%><br/><em>电话：</em><%=shop.tel%></p>
-                <a href="/shop/<%=shop._id%>"><img src="/images/shop/default.png"/></a>
-                <span></span>
-            </div>
-            <% }) %>
-        </section>
+  <section class="main clearfix" style="background: none;">
+    <section class="fav clearfix">
+      <% shops.forEach(function(shop){ %>
+      <div class="food-item">
+        <h3><a href="/shop/<%=shop._id%>"><%=shop.name%></a></h3>
+        <p><em>地址：</em><%=shop.address%><br/><em>电话：</em><%=shop.tel%></p>
+        <a href="/shop/<%=shop._id%>"><img src="/images/shop/1.png"/></a>
+      </div>
+      <% }) %>
     </section>
+  </section>
 </div>
-</body>
-</html>
+<% include footer %>

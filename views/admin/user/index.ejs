@@ -1,0 +1,30 @@
+<% include ../header %>
+<h2>用户列表</h2>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th width="">名称</th>
+    <th width="50px">邮箱</th>
+    <th width="200px">注册时间</th>
+    <th width="300px">操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% users.forEach(function(user){ %>
+  <tr data-user_id="<%=user._id%>" data-user_password="<%=user.password%>">
+    <td><%=user.name%></td>
+    <td><%=user.email%></td>
+    <td><%=user.reg_time%></td>
+
+    <td>
+      <a class="btn btn-primary btn-small" target="_blank" href="/admin/user/orders/<%=user._id %>">历史订单</a>
+      <a class="btn btn-danger btn-small" href="/admin/user/delete/<%=user._id %>">删除</a>
+    </td>
+  </tr>
+  <% }) %>
+  </tbody>
+</table>
+<!--<div class="actions">
+  <a class="btn btn-primary" href="/admin/shop/add">添加店铺</a>
+</div>-->
+<% include ../footer %>

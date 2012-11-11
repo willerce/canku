@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+  <title>餐库</title>
+  <link href="/css/reset.css" rel="stylesheet" type="text/css"/>
+  <link href="/css/style.css" rel="stylesheet" type="text/css"/>
+  <script type="text/javascript" src="/js/jquery.js"></script>
+  <script type="text/javascript" src="/js/script.js"></script>
+</head>
+<body>
+<header id="head">
+  <nav class="nav">
+    <div class="wap">
+      <div title="餐库" class="logo"><a href="/"><span>餐库</span></a></div>
+      <ul>
+        <li><a href="/today">今日订单</a></li>
+        <% if (locals.session.user) { %>
+        <li class="nav_item_my">
+          <a href='#'><%=locals.session.user.name%></a>
+          <ul id="nav_my">
+            <li><a href="/user/order">历史订单</a></li>
+            <li><a href="/user/account">帐号设置</a></li>
+            <li><a href="/user/logout">退出</a></li>
+          </ul>
+        </li>
+        <% } %>
+      </ul>
+    </div>
+  </nav>
+</header>

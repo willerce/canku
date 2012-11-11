@@ -13,7 +13,6 @@ var config = require('./global').config;
 var app = express();
 var MemStore = express.session.MemoryStore;
 
-
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
   app.set('views', __dirname + '/views');

@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html lang="zh-cn" style="background: url('http://s.willerce.com/a4.jpg') repeat center 0 fixed;">
+<head>
+  <meta charset="UTF-8">
+  <title>餐库 › 注册</title>
+  <link href="/css/style.css" rel="stylesheet" type="text/css"/>
+  <script src="/js/jquery.js" type="text/javascript"></script>
+</head>
+<body>
+<div class="auth_form">
+  <form class="session_form" method="post">
+    <h1>餐库 › 注册</h1>
+
+    <div class="item">
+      <input type="text" id="email" name="email" class="input" placeholder="常用邮箱" title="你的常用邮箱"/>
+    </div>
+    <div class="item">
+      <input type="password" id="password" name="password" class="input" placeholder="密码" title="设置一个密码"/>
+    </div>
+    <div class="item">
+      <input type="text" id="name" name="name" class="input" placeholder="名号" title="怎么称呼你"/>
+    </div>
+    <div class="item cleafix">
+      <span><a href="/user/login" title="已有餐库帐号？"> › 登录</a></span>
+      <button type="submit" class="btn">注册</button>
+    </div>
+    <% if (tip){%>
+    <p class="tip"><%=tip%></p>
+    <script type="text/javascript">
+      $(".tip").delay(2000).slideUp();
+    </script>
+    <%}%>
+  </form>
+</div>
+</body>
+</html>

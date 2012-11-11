@@ -1,43 +1,54 @@
-<!DOCTYPE HTML>
-<html lang="zh-cn">
-<head>
-  <meta charset="UTF-8">
-  <title>修改美食</title>
-</head>
-<body>
+<% include ../header %>
 <h2>修改美食</h2>
-<hr>
-<form method="POST">
-  <div class="item">
-    <label for="name">名称</label>
-    <input type="text" name="name" id="name" value="<%=food.name%>">
-  </div>
-  <div class="item">
-    <label for="price">价格</label>
-    <input type="text" name="price" id="price" value="<%=food.price%>">
-  </div>
-  <div class="item">
-    <label for="price">星期</label>
-    <select name="week" id="week">
-      <option selected="true" value="0">全部</option>
-      <option value="1">星期一</option>
-      <option value="2">星期二</option>
-      <option value="3">星期三</option>
-      <option value="4">星期四</option>
-      <option value="5">星期五</option>
-      <option value="6">星期六</option>
-      <option value="7">星期日</option>
-    </select>
-  </div>
-  <div class="item">
-    <label>&nbsp;</label>
-    <input type="submit" value="提交">
-  </div>
-  <div class="item">
-    <input type="hidden" name="id" value="<%=food._id%>">
-    <input type="hidden" name="shop_id" value="<%=food.shop_id%>">
-  </div>
-</form>
-</ul>
-</body>
-</html>
+<div class="well">
+  <form method="POST">
+    <div class="item">
+      <label for="name">名称</label>
+      <input type="text" name="name" id="name" value="<%=food.name%>">
+    </div>
+    <div class="item">
+      <label for="price">价格</label>
+      <input type="text" name="price" id="price" value="<%=food.price%>">
+    </div>
+    <div class="item">
+      <label for="price">星期</label>
+      <select name="week" id="week">
+        <option selected="true" value="-1">全部</option>
+        <option value="1">星期一</option>
+        <option value="2">星期二</option>
+        <option value="3">星期三</option>
+        <option value="4">星期四</option>
+        <option value="5">星期五</option>
+        <option value="6">星期六</option>
+        <option value="0">星期日</option>
+      </select>
+    </div>
+    <div class="item">
+      <label for="categories">分类</label>
+      <select name="categories" id="categories">
+        <%
+        var categories = shop.categories.split('|');
+        for(var key in categories){
+        %>
+        <option value="<%=categories[key]%>"><%=categories[key]%></option>
+        <%}%>
+      </select>
+    </div>
+    <div class="item">
+      <label>&nbsp;</label>
+      <button type="submit" class="btn btn-primary">修改美食</button>
+    </div>
+    <div class="item">
+      <input type="hidden" name="id" value="<%=food._id%>">
+      <input type="hidden" name="shop_id" value="<%=food.shop_id%>">
+    </div>
+  </form>
+  </ul>
+</div>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#week').val('<%=food.week%>');
+    $('#categories option[value="<%=food.category%>"]').attr("selected",true);
+  });
+</script>
+<% include ../footer %>

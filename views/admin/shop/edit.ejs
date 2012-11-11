@@ -1,30 +1,42 @@
-<!DOCTYPE HTML>
-<html lang="zh-cn">
-<head>
-  <meta charset="UTF-8">
-  <title>修改餐馆</title>
-</head>
-<body>
-<form method="POST">
-  <div class="item">
-    <label for="name">名称</label>
-    <input type="text" name="name" id="name" value="<%=shop.name%>">
+<% include ../header %>
+<form method="POST" class="form-horizontal well">
+  <div class="control-group">
+    <label class="control-label" for="name">名称</label>
+    <div class="controls">
+      <input type="text" name="name" id="name" value="<%=shop.name%>">
+    </div>
   </div>
-  <div class="item">
-    <label for="address">地址</label>
-    <input type="text" name="address" id="address" value="<%=shop.address%>">
+  <div class="control-group">
+    <label class="control-label" for="address">地址</label>
+    <div class="controls">
+      <input type="text" name="address" id="address" value="<%=shop.address%>">
+    </div>
   </div>
-  <div class="item">
-    <label for="tel">电话</label>
-    <input type="text" name="tel" id="tel" value="<%=shop.tel%>">
+  <div class="control-group">
+    <label class="control-label" for="tel">电话</label>
+    <div class="controls">
+      <input type="text" name="tel" id="tel" value="<%=shop.tel%>">
+    </div>
   </div>
-  <div class="item">
+  <div class="control-group">
+    <label class="control-label" for="tel">分类</label>
+    <div class="controls">
+      <textarea name="categories" id="categories" class="span5" rows="2"><%=shop.categories%></textarea>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="tel">样式</label>
+    <div class="controls">
+      <textarea name="css" id="css" class="span7" rows="4"><%=shop.css%></textarea>
+    </div>
+  </div>
+  <div class="control-group">
     <input type="hidden" name="id" id="id" value="<%=shop._id%>">
   </div>
-  <div class="item">
-    <label>&nbsp;</label>
-    <input type="submit" value="提交">
+  <div class="control-group">
+    <div class="controls ">
+      <button class="btn btn-primary" type="submit">编辑店铺</button>
+    </div>
   </div>
 </form>
-</body>
-</html>
+<% include ../footer %>

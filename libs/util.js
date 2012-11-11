@@ -88,10 +88,21 @@ exports.decrypt = function(str, secret) {
   return dec;
 };
 
-exports.gen_session = function(email, password , res) {
-  var auth_token = this.encrypt(email + '\t' + password , config.session_secret);
+exports.gen_session = function(name, password , res) {
+  var auth_token = this.encrypt(name + '\t' + password , config.session_secret);
   res.cookie(config.auth_cookie_name, auth_token, {
     path : '/',
-    maxAge : 1000 * 60 * 60 * 24 * 7
+    maxAge : 1000 * 60 * 60 * 24 * 3
   }); // cookie 有效期1周
+};
+
+exports.get_week = {
+  '-1' : '全部',
+  '1' : '星期一',
+  '2' : '星期二',
+  '3' : '星期三',
+  '4' : '星期四',
+  '5' : '星期五',
+  '6' : '星期六',
+  '0' : '星期天',
 };
