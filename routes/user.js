@@ -67,10 +67,10 @@ exports.register = function (req, res) {
         var tip = "不填写完整的孩子是坏孩子";
         break;
       case 'exists_name':
-        var tip = "该名号已经被使用，请重试";
+        var tip = "该名号已经被使用了";
         break;
       case 'exists_email':
-        var tip = "该邮箱地址已经被使用，请重试";
+        var tip = "该邮箱地址已经被使用了";
         break;
       case 'failure':
         var tip = "注册失败，请重试";

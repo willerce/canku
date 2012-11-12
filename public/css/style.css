@@ -16,7 +16,7 @@ textarea { overflow: auto; height: auto; vertical-align: top; resize: none; padd
 a { outline: 0 none; color: #c02116; text-decoration: none }
 a:focus { outline: 0 none }
 a:hover, a:active { outline: 0 none; text-decoration: underline }
-body { position: relative; color: #333; text-align: left; font-weight: normal; line-height: 20px;}
+body { position: relative; color: #333; font-weight: normal; line-height: 20px;}
 .clearfix { zoom: 1; _height: 1px }
 .clearfix:after { clear: both; display: block; visibility: hidden; height: 0; content: "." }
 .hide { display: none }
@@ -47,7 +47,7 @@ body { position: relative; color: #333; text-align: left; font-weight: normal; l
 .title { margin: 25px auto; width: 190px; height: 64px; background: url(../img/logo.png) no-repeat }
 .title span { display: none }
 
-.auth_form { z-index: 2;position: absolute;left:50%;top:50%;margin-left:-125px;margin-top:185px;padding: 10px 20px 20px 20px; width: 200px; background: #fff; font-size: 16px;  box-shadow: 0 0 10px rgba(0, 0, 0, .4); }
+.auth_form { z-index: 2;position: absolute;left:50%;top:50%;margin-left:-125px;margin-top:185px;padding: 10px 20px 20px 20px; width: 200px; background: #fff; font-size: 16px;  box-shadow: 0 0 41px rgba(0, 0, 0, .3),0 4px 0 rgba(255, 255, 255, .8),0 5px 0 rgba(100, 100, 100, 0.4),0 8px 0 rgba(255, 255, 255, .4),inset 0 0 5px rgba(255, 255, 255, .1); }
 .auth_form a { font-size: 14px; line-height: 30px }
 .auth_form h1 { font-size: 24px; line-height: 2em; margin-bottom: 10px; text-align: center; font-weight: bold; }
 .auth_form .item input { width: 186px; }

@@ -5,6 +5,9 @@
 </style>
 <%}%>
 <div class="wap columns clearfix">
+  <%if(typeof locals.session.user.email == "undefined"){%>
+  <div class="tip">你似乎还没有填写邮箱地址，<a href="/user/account">马上去补全吧！</a></div>
+  <%}%>
   <div class="left">
     <h1 class="page-title">
       <strong><%=shop.name%></strong>

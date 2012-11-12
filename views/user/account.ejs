@@ -11,14 +11,14 @@
     <section class="main clearfix inner">
       <form class="session_form" method="POST" id="account">
         <div class="item">
-          <label for="setting-name">用户名</label>
-          <input name="name" id="setting-name" type="text" maxlength="32" placeholder="常用昵称或真名" class="text-32"
-                 value="<%=user.name%>" required="" />
+          <label for="setting-email">邮箱</label>
+          <input name="email" id="setting-email" type="text" maxlength="32" placeholder="常用邮箱，用来登录" class="text-32"
+                 value="<%=user.email%>" required="" />
         </div>
         <div class="item">
-          <label for="setting-email">邮箱</label>
-          <input name="email" id="setting-email" type="text" maxlength="32" placeholder="常用邮箱，用于找回密码" class="text-32"
-                 value="<%=user.email%>" required="" />
+          <label for="setting-name">名号</label>
+          <input name="name" id="setting-name" type="text" maxlength="32" placeholder="怎么称呼你" class="text-32"
+                 value="<%=user.name%>" required="" />
         </div>
         <div class="item">
           <label for="setting-pwd">原密码</label>
