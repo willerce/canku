@@ -22,7 +22,7 @@ exports.today = function (req, res, next) {
     if (!err) {
 
       if (orders.length == 0) {
-        res.render('today', { error: 'null'});
+        res.render('today', { error:'null'});
         return;
       }
 
@@ -57,7 +57,7 @@ exports.today = function (req, res, next) {
 
         //如果已经循环完成，则渲染
         if (orders.length == i)
-          res.render('today', { group:group, error: null});
+          res.render('today', { group:group, error:null});
         else//否则继续进行循环
           forEach(i);
       }
@@ -95,7 +95,7 @@ exports.today = function (req, res, next) {
       forEach(0);
 
     } else {
-      res.render('today', { eror: 'error' });
+      res.render('today', { eror:'error' });
     }
   })
 };
@@ -116,7 +116,7 @@ exports.shop = function (req, res, next) {
   db.shop.findOne({'_id':db.ObjectID.createFromHexString(req.params.id)}, function (err, shop) {
     if (!err) {
       //获取今天的星期
-      var week = (new Date()).getDay().toString();
+      var week = util.getUTC8Day().toString();
       db.food.find({'shop_id':req.params.id, week:{$in:['-1', week]}}).sort({category:1}).toArray(function (err, foods) {
         if (!err) {
 
@@ -169,7 +169,7 @@ exports.submit_order = function (req, res) {
   }
 
   //插入订单
-  db.order.insert({shop_id:shop_id, shop_name:shop_name, user_id:req.session.user._id, user_name:req.session.user.name, time:dateformat(new Date(), 'yyyy-mm-dd hh:MM:ss'), total:total, order:order_list, luck:luck}, function (err, result) {
+  db.order.insert({shop_id:shop_id, shop_name:shop_name, user_id:req.session.user._id, user_name:req.session.user.name, time:util.getUTC8Time("YYYY-MM-DD HH:mm:ss"), total:total, order:order_list, luck:luck}, function (err, result) {
     if (!err) {
       console.log(result);
       res.send('{"result":"success","luck":"' + luck + '"}');
@@ -192,35 +192,5 @@ exports.get_shop = function (req, res) {
 // URL: /404
 exports.pageNotFound = function (req, res) {
   console.log('404 handler..');
-  res.render('404', {status:404,title:'页面不存在'});
+  res.render('404', {status:404, title:'页面不存在'});
 };
-
-/*exports.submit_caller = function (req, res) {
-
- var name = req.body.name;
- var user_id = req.session.user._id.toString();
- var user_name = req.session.user.name.toString();
- var date = dateformat(new Date(), 'yyyymmdd');
-
- db.caller.find({date:{$lte:dateformat(new Date(), 'yyyymmdd')}}).sort({date:-1}).toArray(function (err, result) {
- if (!err) {
- if ((result.length > 0 && result[0].name === user_name) || (result.length == 0 && user_name === 'admin')) {
- if (result[0].date == dateformat(new Date(), 'yyyymmdd')) {
- res.send('{"result":"ed", "name":"' + result[0].do_user_name + '"}');
- } else {
- db.caller.insert({do_user_id:user_id, do_user_name:user_name, name:name, date:date }, function (err, result) {
- if (!err) {
- res.send('{"result":"success"}');
- } else {
- res.send('{"result":"error"}');
- }
- });
- }
- } else {
- res.send('{"result":"not-u"}');
- }
- } else {
- res.send('{"result":"not-u"}');
- }
- })
- };*/

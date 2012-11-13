@@ -6,7 +6,7 @@
  */
 
 var db = require('../global').database;
-var lib = require('../libs/util');
+var util = require('../libs/util');
 var dateformat = require('dateformat');
 
 db.bind('shop');
@@ -14,19 +14,18 @@ db.bind('food');
 db.bind('user');
 
 exports.index = function (req, res) {
-  res.render('admin/index', { title:'Express' });
+  var nowtime = util.getUTC8Time("YYYY-MM-DD HH:mm:SS");
+  //var week = (new Date()).getDay().toString();
+  var week = util.get_week[util.getUTC8Day()];
+
+  res.render('admin/index', { title:'Express', nowtime:nowtime, week:week});
 };
 
 
 exports.shop_index = function (req, res) {
   db.shop.find({}).toArray(function (err, result) {
     if (!err) {
-
-      var today_0 = dateformat(new Date(), 'yyyy-mm-dd ') + "00:00:00";
-      var today_24 = dateformat(new Date(new Date().getTime() + 24 * 60 * 60 * 1000), 'yyyy-mm-dd ') + "00:00:00";
-      var week = (new Date()).getDay().toString();
-
-      res.render('admin/shop/index', {shops:result, today_0:today_0, today_24:today_24, week:week});
+      res.render('admin/shop/index', {shops:result});
     } else {
       res.render('admin/shop/index', {});
     }
@@ -94,7 +93,7 @@ exports.food_add = function (req, res) {
         //获取食品
         db.food.find({'shop_id':req.query['shop_id']}).sort({category:1}).toArray(function (err, foods) {
           if (!err) {
-            res.render('admin/food/add', {'shop':shop, 'foods':foods, week:lib.get_week});
+            res.render('admin/food/add', {'shop':shop, 'foods':foods, week:util.get_week});
           } else {
             console.log('获取店铺出错了，ID是：' + req.params.id);
             next();
@@ -166,7 +165,7 @@ exports.user_index = function (req, res) {
 
 exports.user_delete = function (req, res) {
   var id = req.params.id;
-  db.user.remove({"_id":db.ObjectID.createFromHexString(req.params.id)}, function(err, result){
+  db.user.remove({"_id":db.ObjectID.createFromHexString(req.params.id)}, function (err, result) {
     res.redirect('/admin/user');
   });
 };
@@ -177,6 +176,7 @@ exports.user_orders = function (req, res) {
   db.order.find({user_id:id}).sort({time:-1}).toArray(function (err, result) {
     if (!err) {
       res.render('admin/user/orders', {orders:result});
-    };
+    }
+    ;
   });
 };

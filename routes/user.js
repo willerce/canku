@@ -107,7 +107,7 @@ exports.register = function (req, res) {
 
               // 密码进行MD5
             password = util.md5(password);
-            var reg_time = dateformat(new Date(), 'yyyy-mm-dd HH:MM:ss');
+            var reg_time = util.getUTC8Time("YYYY-MM-DD HH:mm:ss");
 
             // 向数据库保存用户的数据，并进行 session 保存
             db.user.insert({'name':name, 'email':email, reg_time:reg_time, 'password':password}, function (err, user) {
