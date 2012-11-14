@@ -98,7 +98,7 @@
         dom += '<td><td>'+shopping_cart[key].name+'<em class="price">'+shopping_cart[key].price+'元</em></td><td>'+shopping_cart[key].num+'份</td></tr>'
       }
 
-      dom += '</table><div class="foot"><span class="total">共：'+get_total()+' 元</span><input type="button" id="buy-go" class="btn" value="提交订单"/></div>';
+      dom += '</table><div class="foot"><span class="total">共：'+get_total()+' 元</span><button type="button" id="buy-go" class="btn">提交订单</button></div>';
 
       $('#confirm-list').empty().html(dom);
 
