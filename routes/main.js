@@ -14,11 +14,19 @@ db.bind('order');
 // GET URL /today
 exports.today = function (req, res, next) {
 
-  //设置时间范围
-  var today_0 = dateformat(new Date(), 'yyyy-mm-dd ') + "00:00:00";
-  var today_24 = dateformat(new Date(new Date().getTime() + 24 * 60 * 60 * 1000), 'yyyy-mm-dd ') + "00:00:00";
+  var h = (new Date(util.getUTC8Time()).getHours());
+  var start_t = '';
+  var end_t = '';
+  if(h<15){
+    start_t = dateformat(new Date(), 'yyyy-mm-dd ') + "00:00:00";
+    end_t = dateformat(new Date(), 'yyyy-mm-dd ') + "15:00:00";
+  }else{
+    start_t = dateformat(new Date(), 'yyyy-mm-dd ') + "15:00:00";
+    end_t = dateformat(new Date(new Date().getTime() + 24 * 60 * 60 * 1000), 'yyyy-mm-dd ') + "00:00:00";
+  }
 
-  db.order.find({time:{$gt:today_0, $lt:today_24}}).toArray(function (err, orders) {
+  //设置时间范围
+  db.order.find({time:{$gt:start_t, $lt:end_t}}).toArray(function (err, orders) {
     if (!err) {
 
       if (orders.length == 0) {
@@ -57,7 +65,7 @@ exports.today = function (req, res, next) {
 
         //如果已经循环完成，则渲染
         if (orders.length == i)
-          res.render('today', { group:group, error:null});
+          res.render('today', { group:group, error:null, time : "h:" + h + ", start_t" + start_t + ", end_t" + end_t });
         else//否则继续进行循环
           forEach(i);
       }

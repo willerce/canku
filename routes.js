@@ -8,13 +8,13 @@ var main = require('./routes/main');
 var user = require('./routes/user');
 var admin = require('./routes/admin');
 var dev = require('./routes/dev');
+var pay = require('./routes/pay');
 
 module.exports = function(app){
 
   app.get('/',  user.auth, main.index);
   app.get('/today', user.auth, main.today);
   app.get('/shop/:id', user.auth, main.shop);
-
   app.get('/get_shop', user.auth, main.get_shop);
   app.post('/submit_order', user.auth, main.submit_order);
 
@@ -27,6 +27,9 @@ module.exports = function(app){
   app.get('/user/order', user.auth, user.order);
   app.get('/user/account', user.auth, user.account);
   app.post('/user/account', user.auth, user.account);
+
+  app.get('/pay', user.auth, pay.index);
+  app.get('/pay/today_order', user.auth, pay.today_order);
 
   //dev
   app.get('/devlog', dev.log);

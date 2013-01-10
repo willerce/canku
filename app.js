@@ -14,7 +14,7 @@ var app = express();
 var MemStore = express.session.MemoryStore;
 
 app.configure(function(){
-  app.set('port', process.env.PORT || 3000);
+  app.set('port', process.env.PORT || 4000);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.use(express.favicon(__dirname + '/public/img/favicon.ico'));

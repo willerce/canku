@@ -4,6 +4,7 @@
   <div class="tip">即将推出帐号冲值功能，为了确保你的帐号安全，请填写邮箱地址，用于找回密码、重要安全功能。<a href="/user/account">马上去补全吧！</a></div>
   <%}%>
   <% if (!error) {%>
+  <input type="hidden" id="TTTT" value="<%=time%>" />
   <% for(var key in group){ var orders = group[key];%>
   <div id="shop-<%=orders.shop._id%>">
   <h1 class="page-title">

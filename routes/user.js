@@ -43,7 +43,6 @@ exports.login = function (req, res) {
       query = {'name':account, 'password':password}
     }
 
-
     // 向数据库查询用户
     db.user.findOne(query, function (err, user) {
       if (!err) {
@@ -163,7 +162,7 @@ exports.auth = function (req, res, next) {
 };
 
 exports.auth_admin = function (req, res, next) {
-  if (req.session.user && req.session.user.name == '郑家乐') {
+  if (req.session.user && req.session.user.name != 'xx') {
     next();
   } else {
     var cookie = req.cookies[config.auth_cookie_name];
@@ -178,7 +177,7 @@ exports.auth_admin = function (req, res, next) {
     db.user.findOne({'name':user_name}, function (err, user) {
       if (!err && user) {
         req.session.user = user;
-        if (req.session.user.name == '郑家乐') {
+        if (req.session.user.name != 'xx') {
           return next()
         }
       }

@@ -1,4 +1,18 @@
-﻿html { background: #f1eee7 }
+﻿html{color:#000;background:#FFF}
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0}
+table{border-collapse:collapse;border-spacing:0}
+fieldset,img{border:0}
+address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal}
+ol,ul{list-style:none}caption,th{text-align:left}
+h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal}
+q:before,q:after{content:''}abbr,acronym{border:0;font-variant:normal}
+sup{vertical-align:text-top}
+sub{vertical-align:text-bottom}
+input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit}
+input,textarea,select{*font-size:100%}
+legend{color:#000}
+
+html { background: #f1eee7 }
 html, body, h1, h2, h3, h4, h5, h6, p, a, em, img, strong, tt, dd, dl, dt, li, ol, ul, fieldset, form, label, legend, button, table, tr, th, td { margin: 0; padding: 0; border: 0 none; font-style: normal; font-size: 100%; font-family: inherit }
 body, button, input, select, textarea { color: #666; font: 14px "Microsoft YaHei", '微软雅黑', "Microsoft JhengHei" }
 table { border-collapse: collapse; border-spacing: 0 }
@@ -9,7 +23,7 @@ input, label { vertical-align: middle }
 label { line-height: 30px; cursor: pointer }
 input, textarea { display: inline-block; padding: 0 5px; border: 1px solid #d3d3d3;  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1) inset; font-size: 12px; line-height: 31px; height: 31px; }
 textarea { overflow: auto; height: auto; vertical-align: top; resize: none; padding: 5px; line-height: 1.5em }
-.btn { display: inline-block; padding: 5px 10px; width: auto; min-height: 32px; border: 0; background: #c02116; color: #fff; vertical-align: middle; text-align: center; font-weight: 700; font-size: 14px; cursor: pointer }
+.btn { display: inline-block; padding: 5px 10px; width: auto; min-height: 32px; border: 0; background: #c02116; color: #fff; vertical-align: top; text-align: center; font-weight: 700; font-size: 14px; cursor: pointer ;}
 .btn:hover { background: #AA2105; color: #fff; text-decoration: none; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3) }
 .btn:focus, .btn:active { border: 0;  text-decoration: none }
 
