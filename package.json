@@ -1,6 +1,6 @@
 {
   "name": "canku",
-  "version": "0.1",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node app"
@@ -10,6 +10,6 @@
     "ejs": "0.8.3",
     "mongoskin": "0.4.1",
     "dateformat":"1.0.4-1.2.3",
-    "moment":"1.7.2",
+    "moment":"1.7.2"
   }
 }
