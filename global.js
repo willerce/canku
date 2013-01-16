@@ -12,7 +12,7 @@ exports.config = {
   auth_cookie_name: process.env.AUTH_COOKIE_NAME || 'canku_secret',
   login_path : '/user/login',
   time_zone : 8,
-  admin_user_name : process.env.ADMIN_USER_NAME || '郑家乐'
+  admin_user_name : process.env.ADMIN_USER_NAME || 'admin'
 
 };
 
