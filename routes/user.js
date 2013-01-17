@@ -163,7 +163,12 @@ exports.auth = function (req, res, next) {
 
 exports.auth_admin = function (req, res, next) {
   if (req.session.user && req.session.user.name != 'xx') {
-    next();
+    if (req.session.user.canOperateShop) {
+      next();
+    }else{
+      return res.render('note',{title:'权限不够'});
+    }
+    
   } else {
     var cookie = req.cookies[config.auth_cookie_name];
     if (!cookie) {
@@ -178,7 +183,11 @@ exports.auth_admin = function (req, res, next) {
       if (!err && user) {
         req.session.user = user;
         if (req.session.user.name != 'xx') {
-          return next()
+          if( user.canOperateShop ){
+            return next()
+          }else{
+            return res.render('note',{title:'权限不够'})
+          }          
         }
       }
       else {

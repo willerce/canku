@@ -17,8 +17,18 @@ exports.index = function (req, res) {
   var nowtime = util.getUTC8Time("YYYY-MM-DD HH:mm:SS");
   //var week = (new Date()).getDay().toString();
   var week = util.get_week[util.getUTC8Day()];
-
-  res.render('admin/index', { title:'Express', nowtime:nowtime, week:week});
+  if( req.session.user ){
+    if ( req.session.user.isAdmin ){
+      var isAdmin = req.session.user.isAdmin
+      db.user.find({},)
+      return res.render('admin/index', { title: '用户管理', nowtime: nowtime, week: week, isAdmin: isAdmin})
+    }else{
+      return res.render('admin/index', { title:'Express', nowtime:nowtime, week:week, isAdmin: isAdmin});
+    }
+  }else{
+      return res.redirect(config.login_path);
+  }
+  
 };
 
 
