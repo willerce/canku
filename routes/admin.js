@@ -18,6 +18,7 @@ exports.index = function (req, res) {
   //var week = (new Date()).getDay().toString();
   var week = util.get_week[util.getUTC8Day()];
   if( req.session.user ){
+    //这里如果用户有超级管理权限则能看到用户列表，否则为空白
     if ( req.session.user.isAdmin ){
       var isAdmin = req.session.user.isAdmin;
       db.user.find().sort( {reg_time: -1} ).toArray(function (err, users){

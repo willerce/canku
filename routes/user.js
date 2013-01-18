@@ -85,7 +85,6 @@ exports.register = function (req, res) {
     var name = req.body.name;
     var email = req.body.email.toLowerCase();
     var password = req.body.password;
-
     //验证用户空输入
     if (name == "" || password == "") {
       res.redirect('/user/register?tip=notemtpy');
@@ -108,8 +107,8 @@ exports.register = function (req, res) {
             password = util.md5(password);
             var reg_time = util.getUTC8Time("YYYY-MM-DD HH:mm:ss");
 
-            // 向数据库保存用户的数据，并进行 session 保存
-            db.user.insert({'name':name, 'email':email, reg_time:reg_time, 'password':password}, function (err, user) {
+            // 向数据库保存用户的数据，并进行 session 保存      /*添加管理权限字段 isAdmin canOperateShop*/
+            db.user.insert({'name':name, 'email':email, reg_time:reg_time, 'password':password, 'isAdmin': false, 'canOperateShop': false}, function (err, user) {
               if (!err & user.length > 0) {
                 if (user.length > 0) {
                   util.gen_session(user[0].name, user[0].password, res);
@@ -163,7 +162,8 @@ exports.auth = function (req, res, next) {
 
 exports.auth_admin = function (req, res, next) {
   if (req.session.user && req.session.user.name != 'xx') {
-    if (req.session.user.canOperateShop) {
+    //如果用户有管理店铺的权限或者用户时超级管理员  才可以进入管理后台
+    if (req.session.user.canOperateShop || req.session.user.isAdmin) {
       next();
     }else{
       return res.render('note',{title:'权限不够'});
@@ -178,12 +178,12 @@ exports.auth_admin = function (req, res, next) {
     var auth_token = util.decrypt(cookie, config.session_secret);
     var auth = auth_token.split('\t');
     var user_name = auth[0];
-
     db.user.findOne({'name':user_name}, function (err, user) {
       if (!err && user) {
         req.session.user = user;
         if (req.session.user.name != 'xx') {
-          if( user.canOperateShop ){
+          //如果用户有管理店铺的权限或者用户时超级管理员  才可以进入管理后台
+          if( user.canOperateShop || user.isAdmin ){
             return next()
           }else{
             return res.render('note',{title:'权限不够'})
@@ -196,7 +196,7 @@ exports.auth_admin = function (req, res, next) {
     });
   }
 }
-
+//验证用户是否是超级管理员，只有超级管理员才有删除用户，改变用户权限的权限
 exports.auth_super_admin = function (req, res, next){
   if ( req.session.user && req.session.user.name != 'xx' ){
     if ( req.session.user.isAdmin ) {
@@ -204,32 +204,33 @@ exports.auth_super_admin = function (req, res, next){
     }else{
       return res.render('note',{title:'权限不够'});
     }
-  } else {
-    var cookie = req.cookies[config.auth_cookie_name];
-    if (!cookie) {
-      return res.redirect(config.login_path);
-    }
-
-    var auth_token = util.decrypt(cookie, config.session_secret);
-    var auth = auth_token.split('\t');
-    var user_name = auth[0];
-
-    db.user.findOne({'name':user_name}, function (err, user) {
-      if (!err && user) {
-        req.session.user = user;
-        if (req.session.user.name != 'xx') {
-          if( user.isAdmin ){
-            return next()
-          }else{
-            return res.render('note',{title:'权限不够'})
-          }          
-        }
-      }
-      else {
-        return res.redirect(config.login_path);
-      }
-    });
   }
+  // } else {
+  //   var cookie = req.cookies[config.auth_cookie_name];
+  //   if (!cookie) {
+  //     return res.redirect(config.login_path);
+  //   }
+
+  //   var auth_token = util.decrypt(cookie, config.session_secret);
+  //   var auth = auth_token.split('\t');
+  //   var user_name = auth[0];
+
+  //   db.user.findOne({'name':user_name}, function (err, user) {
+  //     if (!err && user) {
+  //       req.session.user = user;
+  //       if (req.session.user.name != 'xx') {
+  //         if( user.isAdmin ){
+  //           return next()
+  //         }else{
+  //           return res.render('note',{title:'权限不够'})
+  //         }          
+  //       }
+  //     }
+  //     else {
+  //       return res.redirect(config.login_path);
+  //     }
+  //   });
+  // }
 }
 
 

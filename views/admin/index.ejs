@@ -46,6 +46,21 @@
     <% }) %>
     </tbody>
   </table>
+ <!-- Modal -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close cancel" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Modal header</h3>
+  </div>
+  <div class="modal-body">
+    <p>确定删除此用户？</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary sure">确定</button>
+    <button class="btn btn-danger cancel" data-dismiss="modal" aria-hidden="true">取消</button>
+    
+  </div>
+</div>
 <script type="text/javascript">
 $(function(){
   //监听超级管理员按钮
@@ -96,20 +111,31 @@ $(function(){
   $("#deleteUser").live('click', function(){
     var id = $(this).closest("tr").attr("id");
     var that = $(this);
-    $.ajax({
-      url: '/admin/user/delete/'+ id,
-      type: 'GET',
-      data: {timeStamp:new Date().getTime()},
-      beforeSend: function(){
-        alert("确定删除用户?");
-      },
-      error: function(){
-        alert('网络错误，请联系管理员');
-      },
-      success: function(data){
-        that.closest("tr")remove();
-      }
+    //弹出选择是否删除窗口
+    $('#myModal').modal({
+          keyboard: true,
+          show: true,
+          backdrop: true
+        });
+    //管理员取消
+    $(".cancel").live('click',function(){
+        return ;
     })
+    //管理员确定则执行删除操作
+    $(".sure").live('click',function(){
+      $("#myModal").hide();
+      $.ajax({
+        url: '/admin/user/delete/' + id,
+        type: 'GET',
+        data: {timeStamp:new Date().getTime()},
+        error: function(){
+          alert('网络错误，请联系管理员');
+        },
+        success: function(data){
+          that.closest("tr").remove();
+        }
+      })
+    })     
   })
 
 })
