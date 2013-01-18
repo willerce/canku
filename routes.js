@@ -46,9 +46,9 @@ module.exports = function(app){
   app.get('/admin/food/edit/:id',user.auth_admin, admin.food_edit);
   app.post('/admin/food/edit/:id',user.auth_admin, admin.food_edit);
   app.get('/admin/user',user.auth_admin, admin.user_index);
-  app.get('/admin/user/delete/:id',user.auth_admin, admin.user_delete);
   app.get('/admin/user/orders/:id',user.auth_admin, admin.user_orders);
-
-  app.get('*', main.pageNotFound);
-
+  app.get('/admin/user/delete/:id',user.auth_super_admin, admin.user_delete);
+  app.get('/admin/user/isAdmin/:id',user.auth_super_admin, admin.user_isAdmin);
+  app.get('/admin/user/canOperateShop/:id',user.auth_super_admin, admin.user_operateShop);
+  // app.get('*', main.pageNotFound);
 };

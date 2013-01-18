@@ -19,9 +19,10 @@ exports.index = function (req, res) {
   var week = util.get_week[util.getUTC8Day()];
   if( req.session.user ){
     if ( req.session.user.isAdmin ){
-      var isAdmin = req.session.user.isAdmin
-      db.user.find({},)
-      return res.render('admin/index', { title: '用户管理', nowtime: nowtime, week: week, isAdmin: isAdmin})
+      var isAdmin = req.session.user.isAdmin;
+      db.user.find().sort( {reg_time: -1} ).toArray(function (err, users){
+        return res.render('admin/index', { title: '用户管理', nowtime: nowtime, week: week, isAdmin: isAdmin, users: users})  
+      });
     }else{
       return res.render('admin/index', { title:'Express', nowtime:nowtime, week:week, isAdmin: isAdmin});
     }
@@ -176,7 +177,9 @@ exports.user_index = function (req, res) {
 exports.user_delete = function (req, res) {
   var id = req.params.id;
   db.user.remove({"_id":db.ObjectID.createFromHexString(req.params.id)}, function (err, result) {
-    res.redirect('/admin/user');
+    if(!err){
+      return res.send(200);
+    }
   });
 };
 
@@ -190,3 +193,39 @@ exports.user_orders = function (req, res) {
     ;
   });
 };
+
+
+exports.user_isAdmin = function(req, res){
+  var id = req.params.id;
+  db.user.findOne({"_id": db.ObjectID.createFromHexString(id)},function (err, user){
+    if(user.isAdmin){
+      user.isAdmin = false;
+    }else{
+      user.isAdmin = true;
+    }
+    delete user._id;
+    db.user.update({"_id": db.ObjectID.createFromHexString(id)},{'$set': user},function (err, result){
+      if(!err) {
+        console.log(user);
+        return res.send(user.isAdmin);
+      }
+    });
+  });
+}
+
+exports.user_operateShop = function(req, res){
+  var id = req.params.id;
+   db.user.findOne({"_id": db.ObjectID.createFromHexString(id) },function (err, user){
+    if(user.canOperateShop){
+      user.canOperateShop = false;
+    }else{
+      user.canOperateShop = true;
+    }
+    delete user._id;
+    db.user.update({"_id": db.ObjectID.createFromHexString(id)},{'$set': user},function (err, result){
+      if(!err) {
+        return res.send(user.canOperateShop);
+      }
+    });
+  });
+} 

@@ -197,6 +197,41 @@ exports.auth_admin = function (req, res, next) {
   }
 }
 
+exports.auth_super_admin = function (req, res, next){
+  if ( req.session.user && req.session.user.name != 'xx' ){
+    if ( req.session.user.isAdmin ) {
+      next();
+    }else{
+      return res.render('note',{title:'权限不够'});
+    }
+  } else {
+    var cookie = req.cookies[config.auth_cookie_name];
+    if (!cookie) {
+      return res.redirect(config.login_path);
+    }
+
+    var auth_token = util.decrypt(cookie, config.session_secret);
+    var auth = auth_token.split('\t');
+    var user_name = auth[0];
+
+    db.user.findOne({'name':user_name}, function (err, user) {
+      if (!err && user) {
+        req.session.user = user;
+        if (req.session.user.name != 'xx') {
+          if( user.isAdmin ){
+            return next()
+          }else{
+            return res.render('note',{title:'权限不够'})
+          }          
+        }
+      }
+      else {
+        return res.redirect(config.login_path);
+      }
+    });
+  }
+}
+
 
 exports.logout = function (req, res) {
   req.session.destroy();

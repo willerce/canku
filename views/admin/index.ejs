@@ -2,4 +2,117 @@
 <div>
   <p>今天是<%=week%>，<%=nowtime%></p>
 </div>
+<% if(isAdmin) {%>
+<h2>用户列表</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>昵称</th>
+        <th>邮箱</th>
+        <th>超级管理员</th>
+        <th>店铺管理员</th>
+        <th>注册时间</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% users.forEach(function(user){ %>
+      <tr id="<%= user._id %>">
+        <td><%= user.name %></td>
+        <td><%= user.email %></td>
+        <td>
+        	<span><%= user.isAdmin %></span>
+        	<% if(user.isAdmin) {%>
+        	<a class="btn btn-primary btn-small Admin">撤销</a>
+        	<% }else{ %>
+        	<a class="btn btn-primary btn-small Admin">升级</a>
+          <% } %>
+        </td>
+        <td>
+        	<span><%= user.canOperateShop %></span>
+        	<% if(user.canOperateShop) {%>
+          <a class="btn btn-primary btn-small Shoper">撤销</a>
+          <% }else{%>
+          <a class="btn btn-primary btn-small Shoper">升级</a>
+        	<% } %>
+        </td>
+        <td>
+          <%= user.reg_time %>
+        </td>
+        <td>          
+          <a class="btn btn-primary btn-small" id = "deleteUser" >删除用户</a>
+        </td>
+      </tr>
+    <% }) %>
+    </tbody>
+  </table>
+<script type="text/javascript">
+$(function(){
+  //监听超级管理员按钮
+  $(".Admin").live('click',function(){
+    var id = $(this).closest("tr").attr("id");
+    var that = $(this);
+    $.ajax({
+      url: '/admin/user/isAdmin/' + id,
+      type: 'GET',
+      data: { timeStamp:new Date().getTime() },//解决ie不能兼容问题
+      error: function(){
+        alert('网络错误，请联系管理员');
+      },
+      success: function(data){
+        if(data){
+          that.prev().text("true");
+          that.text("撤销")
+        }else{
+          that.prev().text("false");
+          that.text("升级");
+        }
+      }
+    })
+  })
+  //监听店铺管理员按钮
+  $(".Shoper").live('click',function(){
+    var id = $(this).closest("tr").attr("id");
+    var that = $(this);
+    $.ajax({
+      url: '/admin/user/canOperateShop/' + id,
+      type: 'GET',
+      data: {timeStamp:new Date().getTime()},//解决ie不能兼容问题
+      error: function(){
+        alert('网络错误，请联系管理员');
+      },
+      success: function(data){
+        if(data){
+          that.prev().text("true");
+          that.text("撤销")
+        }else{
+          that.prev().text("false");
+          that.text("升级");
+        }
+      }
+    })
+  });
+  //监听删除用户的按钮
+  $("#deleteUser").live('click', function(){
+    var id = $(this).closest("tr").attr("id");
+    var that = $(this);
+    $.ajax({
+      url: '/admin/user/delete/'+ id,
+      type: 'GET',
+      data: {timeStamp:new Date().getTime()},
+      beforeSend: function(){
+        alert("确定删除用户?");
+      },
+      error: function(){
+        alert('网络错误，请联系管理员');
+      },
+      success: function(data){
+        that.closest("tr")remove();
+      }
+    })
+  })
+
+})
+</script>
+<% } %>
 <% include footer %>
