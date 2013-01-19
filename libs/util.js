@@ -5,6 +5,7 @@
 var crypto = require('crypto');
 var config = require('../global.js').config;
 var database = require('../global.js').database;
+var nodemailer = require('nodemailer');
 var moment = require('moment');
 
 //对moment模块的一些扩展及定义
@@ -72,3 +73,32 @@ exports.getUTC8Time = function (format) {
 exports.getUTC8Day = function (format) {
   return new Date(this.getUTC8Time()).getDay();
 };
+
+
+/*初始化nodemailer*/
+var transport = nodemailer.createTransport("SMTP", {
+    service: "Gmail",
+    auth: {
+        user: "admin@gmail.com",
+        pass: "*******"
+    }
+});
+
+/**
+ * 发送邮件
+ */
+exports.sendMail = function (options, callback) {
+        transport.sendMail({
+            from: "admin@gmail.com",
+            to: options.to,
+            subject: options.subject,
+            text: options.text,
+        }, function(err, resStatus) {
+                if(err) {
+                        console.log(err);
+                        callback(err);
+                }
+                console.log(resStatus);
+                callback(null);
+        });
+}

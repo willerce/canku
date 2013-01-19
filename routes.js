@@ -27,6 +27,8 @@ module.exports = function(app){
   app.get('/user/order', user.auth, user.order);
   app.get('/user/account', user.auth, user.account);
   app.post('/user/account', user.auth, user.account);
+  app.get('/user/forgetPassword',user.forgetPassword);
+  app.post('/user/forgetPassword', user.forgetPassword);
 
   app.get('/pay', user.auth, pay.index);
   app.get('/pay/today_order', user.auth, pay.today_order);

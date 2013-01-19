@@ -358,6 +358,65 @@ exports.account = function (req, res) {
         }
       });
     }
-  }
-  ;
+  };
 };
+
+
+exports.forgetPassword = function(req, res){
+  if (req.method == 'GET'){
+    switch (req.query['tip']) {
+      case 'email_not_exist':
+        var tip  = "邮箱不存在";
+        break;
+      case 'success':
+        var tip = "密码已发送成功请去邮箱验证";
+        break;
+      case 'error':
+        var tip = "网络异常，请稍后再试";//此错误表示服务器问题,只要是数据库的err 统一发送此错误
+        break;
+      case 'sendfail':
+        var tip = "发送失败，请稍后再试";//此错误表示邮件服务有问题
+        break;
+      default:
+        var tip = null;
+        break;
+    }
+    return res.render('user/forgetPassword',{tip:tip});
+  } else {
+    if (req.method == "POST"){
+      //判断邮箱存在否
+      db.user.findOne({'email': req.body.email}, function(err, result){
+        if (!err){
+          if (result){
+            var rand = Math.floor(Math.random()*90000000);//随机生成一个数字
+            var randPwd = 10000000 + rand;
+            var newPassword = util.md5(String(randPwd));
+            result.password = newPassword;
+            delete result._id;
+            db.user.update({"email": req.body.email},{'$set': result}, function(err) {
+              if (err) {
+                res.redirect('/user/forgetPassword?tip=error');
+              } else {
+                //如果邮箱存在，则发送密码
+                util.sendMail({
+                  to: req.body.email,
+                  subject: '餐库新密码',
+                  text: '你的新密码是' + randPwd + '请用此密码登陆，然后重置你的密码'
+                }, function(err){
+                  if (err) return res.redirect('/user/forgetPassword?tip=sendfail');
+                  res.redirect('/user/forgetPassword?tip=success');
+                });  
+              }
+            });
+          } else {
+            res.redirect('/user/forgetPassword?tip=email_not_exist');
+          }
+        } else {
+          res.redirect('/user/forgetPassword?tip=error');
+        }
+      })
+    }
+  }
+}
+
+
