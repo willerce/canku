@@ -389,7 +389,7 @@ exports.forgetPassword = function(req, res){
         if (!err){
           if (result){
             var rand = Math.floor(Math.random()*90000000);//随机生成一个数字
-            var randPwd = 10000000 + rand;
+            var randPwd = Date.now() + rand;
             var newPassword = util.md5(String(randPwd));
             result.password = newPassword;
             delete result._id;
