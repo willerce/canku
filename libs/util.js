@@ -56,12 +56,12 @@ exports.decrypt = function (str, secret) {
 exports.gen_session = function (name, password, res) {
   var auth_token = this.encrypt(name + '\t' + password, config.session_secret);
   res.cookie(config.auth_cookie_name, auth_token, {
-    path:'/',
-    maxAge:1000 * 60 * 60 * 24 * 3
+    path: '/',
+    maxAge: 1000 * 60 * 60 * 24 * 3
   }); // cookie 有效期1周
 };
 
-exports.get_week = { '-1':'全部', '0':'星期天', '1':'星期一', '2':'星期二', '3':'星期三', '4':'星期四', '5':'星期五', '6':'星期六'};
+exports.get_week = { '-1': '全部', '0': '星期天', '1': '星期一', '2': '星期二', '3': '星期三', '4': '星期四', '5': '星期五', '6': '星期六'};
 
 exports.getUTC8Time = function (format) {
   if (format)
@@ -77,28 +77,28 @@ exports.getUTC8Day = function (format) {
 
 /*初始化nodemailer*/
 var transport = nodemailer.createTransport("SMTP", {
-    service: "Gmail",
-    auth: {
-        user: "admin@gmail.com",
-        pass: "*******"
-    }
+  service: config.nodeMailer.service,
+  auth: {
+    user: config.nodeMailer.auth.user,
+    pass: config.nodeMailer.auth.pass
+  }
 });
 
 /**
  * 发送邮件
  */
 exports.sendMail = function (options, callback) {
-        transport.sendMail({
-            from: "admin@gmail.com",
-            to: options.to,
-            subject: options.subject,
-            text: options.text,
-        }, function(err, resStatus) {
-                if(err) {
-                        console.log(err);
-                        callback(err);
-                }
-                console.log(resStatus);
-                callback(null);
-        });
+  transport.sendMail({
+    from: config.nodeMailer.auth.from,
+    to: options.to,
+    subject: options.subject,
+    text: options.text,
+  }, function (err, resStatus) {
+    if (err) {
+      console.log(err);
+      callback(err);
+    }
+    console.log(resStatus);
+    callback(null);
+  });
 }

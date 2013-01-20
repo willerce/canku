@@ -12,7 +12,15 @@ exports.config = {
   auth_cookie_name: process.env.AUTH_COOKIE_NAME || 'canku_secret',
   login_path: '/user/login',//用户登录地址
   time_zone: 8,//时区，不般不用改
-  admin_user_name: process.env.ADMIN_USER_NAME || 'admin'
+  admin_user_email: process.env.ADMIN_USER_EMAIL || 'admin@admin.com',//默认超级管理员的邮箱地址
+  nodeMailer: {
+    service: "Gmail",
+    from: "admin@gmail.com",
+    auth: {
+      user: "admin@gmail.com",
+      pass: "*******"
+    }
+  }
 };
 
 
