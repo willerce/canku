@@ -1,0 +1,15 @@
+<% include ../header %>
+  <h2>店铺</h2>
+  <% if(shop.picmenu){ %>
+    <img src="<%=shop.picmenu%>" />
+  <% } %>
+  <div class="actions">
+    <a class="btn btn-primary btn-danger" href="remove">删除图片菜单</a>
+  </div>
+  <div class="actions">
+    <form method="post" action="replace" enctype="multipart/form-data">
+      <input type="file" name="picmenu" />
+      <button type="submit" class="btn btn-primary">更换图片菜单</button>
+    <form>
+  </div>
+<% include ../footer %>
