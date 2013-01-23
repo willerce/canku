@@ -26,7 +26,7 @@ exports.config = {
 
 //mongodb settings for mongolab START
 //如果使用 MongoLab 提供的 MongoDB 服务，请保留这个配置，否则，删除下面这一行
-exports.db = mongoskin.db(process.env.MONGOLAB_URI || "mongodb://localhost/canku");//数据库连接串
+exports.db = exports.database = mongoskin.db(process.env.MONGOLAB_URI || "mongodb://localhost/canku");//数据库连接串
 //mongodb settings for mongolab END
 
 //mongodb settings for appfog mongodb service START
@@ -55,7 +55,7 @@ exports.db = mongoskin.db(process.env.MONGOLAB_URI || "mongodb://localhost/canku
  return "mongodb://" + obj.hostname + ":" + obj.port + "/" + obj.db;
  }
  };
- exports.db = mongoskin.db(generate_mongo_url(mongo));*/
+ exports.db = exports.database = mongoskin.db(generate_mongo_url(mongo));*/
 //mongodb settings for appfog mongodb service END
 
 //运行时的临时变量
