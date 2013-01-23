@@ -166,3 +166,5 @@ pip-log.txt
 .idea
 node_modules
 global.js
+public/picmenu*.jpg
+

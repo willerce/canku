@@ -7,11 +7,12 @@
     暂无图片菜单
   <% } %></div>
   <div class="actions">
-    <form method="post" action="replace" enctype="multipart/form-data">
+    <form method="post" action="upload" enctype="multipart/form-data">
       <input type="file" name="picmenu" />
       <button type="submit" class="btn btn-primary">更换图片菜单</button>
+      <small>(亲，我只认jpg格式的图片哦)</small>
       <% if(shop.picmenu){ %>
-      <a class="btn btn-primary btn-danger" href="remove">删除图片菜单</a>
+      <a class="btn btn-primary btn-danger" href="upload">删除图片菜单</a>
       <% } %>
     <form>
   </div>
