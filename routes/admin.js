@@ -5,6 +5,8 @@
  * Time: 7:40 PM
  */
 
+var fs = require('fs');
+var path = require('path');
 var db = require('../global').database;
 var util = require('../libs/util');
 var dateformat = require('dateformat');
@@ -96,6 +98,18 @@ exports.shop_edit = function (req, res) {
     })
   }
   ;
+};
+
+
+exports.shop_picmenu = function (req, res) {
+  db.shop.findOne({"_id":db.ObjectID.createFromHexString(req.params.id)}, function (err, shop) {
+    fs.exists(path.join(__dirname, '..', 'picmenu' + shop.id), function (exists){
+      shop.picmenu = exists ? 'picmenu' + shop.id : '';
+      res.render('admin/shop/picmenu', {
+        "shop": shop
+      });
+    });
+  });
 };
 
 exports.food_add = function (req, res) {

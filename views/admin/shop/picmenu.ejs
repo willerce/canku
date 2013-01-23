@@ -1,15 +1,18 @@
 <% include ../header %>
-  <h2>店铺</h2>
+  <h2>【<a href="/shop/<%=shop._id%>" target="_blank"><%=shop.name%></a>】的图片菜单</h2>
+  <div class="hero-unit">
   <% if(shop.picmenu){ %>
     <img src="<%=shop.picmenu%>" />
-  <% } %>
-  <div class="actions">
-    <a class="btn btn-primary btn-danger" href="remove">删除图片菜单</a>
-  </div>
+  <% }else{ %>
+    暂无图片菜单
+  <% } %></div>
   <div class="actions">
     <form method="post" action="replace" enctype="multipart/form-data">
       <input type="file" name="picmenu" />
       <button type="submit" class="btn btn-primary">更换图片菜单</button>
+      <% if(shop.picmenu){ %>
+      <a class="btn btn-primary btn-danger" href="remove">删除图片菜单</a>
+      <% } %>
     <form>
   </div>
 <% include ../footer %>
