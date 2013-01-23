@@ -26,37 +26,36 @@ exports.config = {
 
 //mongodb settings for mongolab START
 //如果使用 MongoLab 提供的 MongoDB 服务，请保留这个配置，否则，删除下面这一行
-exports.db = exports.database = mongoskin.db(process.env.MONGOLAB_URI || "mongodb://localhost/canku");//数据库连接串
+exports.database = mongoskin.db(process.env.MONGOLAB_URI || "mongodb://localhost/canku");//数据库连接串
 //mongodb settings for mongolab END
 
 //mongodb settings for appfog mongodb service START
 //如果使用 Appfog 自带的 MongoDB服务，请使用以下配置
 /*if (process.env.VCAP_SERVICES) {
- var env = JSON.parse(process.env.VCAP_SERVICES);
- var mongo = env['mongodb-1.8'][0]['credentials'];
- }
- else {
- var mongo = {
- "hostname": "localhost",
- "port": 27017,
- "username": "",
- "password": "",
- "name": "",
- "db": "noderce"
- }
- }
- var generate_mongo_url = function (obj) {
- obj.hostname = (obj.hostname || 'localhost');
- obj.port = (obj.port || 27017);
- obj.db = (obj.db || 'test');
- if (obj.username && obj.password) {
- return "mongodb://" + obj.username + ":" + obj.password + "@" + obj.hostname + ":" + obj.port + "/" + obj.db;
- } else {
- return "mongodb://" + obj.hostname + ":" + obj.port + "/" + obj.db;
- }
- };
- exports.db = exports.database = mongoskin.db(generate_mongo_url(mongo));*/
-//mongodb settings for appfog mongodb service END
+  var env = JSON.parse(process.env.VCAP_SERVICES);
+  var mongo = env['mongodb-1.8'][0]['credentials'];
+}
+else {
+  var mongo = {
+    "hostname": "localhost",
+    "port": 27017,
+    "username": "",
+    "password": "",
+    "name": "",
+    "db": "noderce"
+  }
+}
+var generate_mongo_url = function (obj) {
+  obj.hostname = (obj.hostname || 'localhost');
+  obj.port = (obj.port || 27017);
+  obj.db = (obj.db || 'test');
+  if (obj.username && obj.password) {
+    return "mongodb://" + obj.username + ":" + obj.password + "@" + obj.hostname + ":" + obj.port + "/" + obj.db;
+  } else {
+    return "mongodb://" + obj.hostname + ":" + obj.port + "/" + obj.db;
+  }
+};
+exports.database = mongoskin.db(generate_mongo_url(mongo));*/
 
 //运行时的临时变量
 exports.runtime = {};
