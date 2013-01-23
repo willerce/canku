@@ -27,6 +27,8 @@ module.exports = function(app){
   app.get('/user/order', user.auth, user.order);
   app.get('/user/account', user.auth, user.account);
   app.post('/user/account', user.auth, user.account);
+  app.get('/user/forgetPassword',user.forgetPassword);
+  app.post('/user/forgetPassword', user.forgetPassword);
 
   app.get('/pay', user.auth, pay.index);
   app.get('/pay/today_order', user.auth, pay.today_order);
@@ -46,9 +48,11 @@ module.exports = function(app){
   app.get('/admin/food/edit/:id',user.auth_admin, admin.food_edit);
   app.post('/admin/food/edit/:id',user.auth_admin, admin.food_edit);
   app.get('/admin/user',user.auth_admin, admin.user_index);
-  app.get('/admin/user/delete/:id',user.auth_admin, admin.user_delete);
   app.get('/admin/user/orders/:id',user.auth_admin, admin.user_orders);
-
+  //super-admin :  delete user;change user permisson(isAdmin,canOperateShop)
+  app.get('/admin/user/delete/:id',user.auth_super_admin, admin.user_delete);
+  app.get('/admin/user/isAdmin/:id',user.auth_super_admin, admin.user_isAdmin);
+  app.get('/admin/user/canOperateShop/:id',user.auth_super_admin, admin.user_operateShop);
+  //404 hadle
   app.get('*', main.pageNotFound);
-
 };

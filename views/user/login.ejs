@@ -11,13 +11,14 @@
       <form method="post" class="session_form">
           <h1>餐库 › 登录</h1>
           <div class="item">
-            <input type="text" id="name" name="account" class="input" placeholder="邮箱或名号" title="你的帐号邮箱或名号" required=""/>
+            <input type="text" id="name" name="account" class="input" placeholder="邮箱" title="你的帐号邮箱" required=""/>
           </div>
           <div class="item">
             <input type="password" id="password" name="password" class="input" placeholder="密码" title="你的帐号密码" required=""/>
           </div>
           <div class="item clearfix">
-            <span><a href="/user/register" title="还没有餐库帐号？"> › 注册</a></span>
+            <span><a href="/user/register" title="还没有餐库帐号？"> › 注册</a></span>&nbsp;&nbsp;
+            <span><a href="/user/forgetPassword" title="忘记密码？"> › 忘记密码</a></span>
             <button type="submit" id="sub" class="btn">登录</button>
           </div>
           <% if (tip){%>
