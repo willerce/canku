@@ -2,6 +2,8 @@
  * GET home page.
  */
 
+var fs = require('fs');
+var path = require('path');
 var db = require('../global.js').database;
 var util = require('../libs/util.js');
 var dateformat = require('dateformat');
@@ -60,6 +62,11 @@ exports.today = function (req, res, next) {
           } else {
             group[shop_id].analytics[order.order[j].id].num = parseFloat(group[shop_id].analytics[order.order[j].id].num) + parseFloat(order.order[j].num);
           }
+        }
+        //统计各种图片菜单点餐项
+        for(var j in order.picmenu){
+          group[shop_id].totalNum ++;
+          
         }
         i++;
 
@@ -146,8 +153,12 @@ exports.shop = function (req, res, next) {
               console.log(foods.name + "没有无法确定分类");
             }
           }
-          //页面渲染
-          res.render('shop', {'shop':shop, 'group':group});
+          //检查有没有图片菜单
+          fs.exists(path.join(__dirname, '..', 'public', 'picmenu' + req.params.id + '.jpg'), function (exists){
+            shop.picmenu = exists ? '/picmenu' + req.params.id + '.jpg': '';
+            //页面渲染
+            res.render('shop', {'shop':shop, 'group':group});
+          });
         } else {
           console.log('获取店铺出错了，ID是：' + req.params.id + ":error" + err);
           next();
@@ -168,6 +179,7 @@ exports.submit_order = function (req, res) {
 
   //获取订单
   var order_list = JSON.parse(req.body.list);
+  var picmenu = JSON.parse(req.body.picmenu);
   var shop_id = req.body.shop_id;
   var shop_name = req.body.shop_name;
 
@@ -177,7 +189,7 @@ exports.submit_order = function (req, res) {
   }
 
   //插入订单
-  db.order.insert({shop_id:shop_id, shop_name:shop_name, user_id:req.session.user._id, user_name:req.session.user.name, time:util.getUTC8Time("YYYY-MM-DD HH:mm:ss"), total:total, order:order_list, luck:luck}, function (err, result) {
+  db.order.insert({shop_id:shop_id, shop_name:shop_name, user_id:req.session.user._id, user_name:req.session.user.name, time:util.getUTC8Time("YYYY-MM-DD HH:mm:ss"), total:total, order:order_list, picmenu:picmenu, luck:luck}, function (err, result) {
     if (!err) {
       console.log(result);
       res.send('{"result":"success","luck":"' + luck + '"}');

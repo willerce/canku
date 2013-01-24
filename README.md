@@ -39,7 +39,7 @@ canku 是一个使用 nodejs 编写的多人订餐程序，使用了 [express](h
     .food-list li {width: 269px;}
     .food-list li:nth-child(even) {margin-right: 0; float:right;}
 
-
+3. 支持以图片的方式上传每家店铺的菜单，用户可以直接在图上戳戳以点餐，图片菜单中的菜不能算入价格。
 
 ##License
 

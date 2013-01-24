@@ -9,8 +9,8 @@
     "express": "3.0.3",
     "ejs": "0.8.3",
     "mongoskin": "0.4.1",
-    "dateformat":"1.0.4-1.2.3",
-    "moment":"1.7.2",
+    "dateformat": "1.0.4-1.2.3",
+    "moment": "1.7.2",
     "nodemailer": "0.3.37"
   }
 }
