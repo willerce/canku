@@ -129,6 +129,7 @@ body { position: relative; color: #333; font-weight: normal; line-height: 20px;}
 .food-list li.checked { background-position: 3px -105px }
 .food-list li.checked:hover { border-color: #d80100; background-color: #d80100; background-position: 3px -161px; }
 .food-list li:hover em, .food-list li.checked em { color: #eee }
+#deleteFood { cursor: pointer; }
 
 .food-list li em { position: absolute; right: 10px; padding-left: 10px; color: #999; font-size: 14px }
 .food-list .cat-title { border-bottom: 1px solid #BBB; font-size: 18px; -webkit-box-shadow: inset 0 -2px 0 #EEE; -moz-box-shadow: inset 0 -2px 0 #eee; box-shadow: inset 0 -2px 0 #EEE; margin: 20px 0; line-height: 3px; text-align: center; }
@@ -162,6 +163,9 @@ body { position: relative; color: #333; font-weight: normal; line-height: 20px;}
 .today_null .txt { padding: 15px 0 20px 135px; background: #fff url('../img/empty.gif') no-repeat 10px 5px ;}
 .today_null .txt h3{font-size: 30px; line-height: 30px; margin-bottom: 20px;;}
 #today-list { width: 55% }
+#today-list .owner { background: #888888; }
+#tbody-list .owner .luck .bar { background: #ffffff; }
+.cancel-order { display: none; }
 #today-analytics { float: right; width: 40% }
 .today-tb { float: left }
 .today-tb td, .today-tb th { padding: 3px 10px; border: 1px solid #ccc }
