@@ -2,6 +2,8 @@
  * GET home page.
  */
 
+var fs = require('fs');
+var path = require('path');
 var db = require('../global.js').database;
 var util = require('../libs/util.js');
 var dateformat = require('dateformat');
@@ -146,8 +148,12 @@ exports.shop = function (req, res, next) {
               console.log(foods.name + "没有无法确定分类");
             }
           }
-          //页面渲染
-          res.render('shop', {'shop':shop, 'group':group});
+          //检查有没有图片菜单
+          fs.exists(path.join(__dirname, '..', 'public', 'picmenu' + req.params.id + '.jpg'), function (exists){
+            shop.picmenu = exists ? '/picmenu' + req.params.id + '.jpg': '';
+            //页面渲染
+            res.render('shop', {'shop':shop, 'group':group});
+          });
         } else {
           console.log('获取店铺出错了，ID是：' + req.params.id + ":error" + err);
           next();
