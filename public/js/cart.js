@@ -111,14 +111,16 @@
           width: $('#picmenu>img').width(),
           height: $('#picmenu>img').height(),
           left: -$(e).offset().left + $('#picmenu').offset().left,
-          top: -$(e).offset().top + $('#picmenu').offset().top
+          top: -$(e).offset().top + $('#picmenu').offset().top,
+          itemwidth: $(e).width(),
+          itemheight: $(e).height()
         });
         $('#picmenu>img').clone().css({
           position: 'absolute'
         }).css(picmenu_item).appendTo($('<div></div>').css({
           position: 'relative',
-          width: $(e).width(),
-          height: $(e).height(),
+          width: picmenu_item.itemwidth,
+          height: picmenu_item.itemheight,
           overflow: 'hidden'
         }).insertBefore('#buy-go'));
       }).length){
