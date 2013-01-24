@@ -34,6 +34,13 @@
               <% order.order.forEach(function(food){ %>
               <li><%=food.name%> - <%=food.price%>元 - <%=food.num%> 份</li>
               <%})%>
+              <% order.picmenu.forEach(function(food){ %>
+              <li>
+                <div style="position:relative;overflow:hidden;width:<%=food.itemwidth%>px;height:<%=food.itemheight%>px;">
+                  <img src="<%=food.picmenu%>" style="position:absolute;left:<%=food.left%>px;top:<%=food.top%>px;width:<%=food.width%>px;height:<%=food.height%>px;" />
+                </div>
+              </li>
+              <%})%>
             </ul>
           </td>
           <td class="luck" data-luck="<%=order.luck%>">
@@ -48,7 +55,7 @@
         <tfoot>
         <tr style="text-align: right;background: #f9f9f9;">
           <td colspan="4">
-            共计：<b><%=orders.totalPrice%></b> 元
+            共计：<b><%=orders.totalPrice%></b> 元（价格不包括图片中的）
           </td>
         </tr>
         </tfoot>
@@ -65,11 +72,20 @@
           <td><%=orders.analytics[key].name%> - <%=orders.analytics[key].num%>份</td>
         </tr>
         <%}%>
+        <% orders.orders.forEach(function(order){ order.picmenu.forEach(function(food){ %>
+        <tr>
+          <td>
+            <div style="position:relative;overflow:hidden;width:<%=food.itemwidth%>px;height:<%=food.itemheight%>px;">
+              <img src="<%=food.picmenu%>" style="position:absolute;left:<%=food.left%>px;top:<%=food.top%>px;width:<%=food.width%>px;height:<%=food.height%>px;" />
+            </div>
+          </td>
+        </tr>
+        <%})})%>
         </tbody>
         <tfoot>
         <tr style="text-align: right;background: #f9f9f9;">
           <td colspan="3">
-            <p>共计 <b><%=orders.totalNum%></b> 份， <b><%=orders.totalPrice%></b> 元</p>
+            <p>共计 <b><%=orders.totalNum%></b> 份， <b><%=orders.totalPrice%></b> 元（价格不包括图片中的）</p>
           </td>
         </tr>
         </tfoot>

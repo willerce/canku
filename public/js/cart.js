@@ -88,7 +88,7 @@
       dismissmodalclass: 'close-reveal-modal'
     });
 
-    if (shopping_cart.length <= 0) {
+    if (shopping_cart.length <= 0 && $('#picmenu>.ui-draggable').length==0) {
       $('#confirm-list').empty().html("亲，不要着急，您还木有点菜呢！");
     } else {
 
@@ -102,6 +102,31 @@
 
       $('#confirm-list').empty().html(dom);
 
+      // 构造图片菜单
+      var picmenu_list = [];
+      if($('#picmenu>.ui-draggable').each(function(i, e){
+        var picmenu_item;
+        picmenu_list.push(picmenu_item = {
+          picmenu: $('#picmenu>img').attr('src'),
+          width: $('#picmenu>img').width(),
+          height: $('#picmenu>img').height(),
+          left: -$(e).offset().left + $('#picmenu').offset().left,
+          top: -$(e).offset().top + $('#picmenu').offset().top,
+          itemwidth: $(e).width(),
+          itemheight: $(e).height()
+        });
+        $('#picmenu>img').clone().css({
+          position: 'absolute'
+        }).css(picmenu_item).appendTo($('<div></div>').css({
+          position: 'relative',
+          width: picmenu_item.itemwidth,
+          height: picmenu_item.itemheight,
+          overflow: 'hidden'
+        }).insertBefore('#buy-go'));
+      }).length){
+        $('<p>再加上：</p>').insertAfter('#confirm-list .total');
+      }
+
       $('#buy-go').unbind('click').bind('click', function () {
 
         //禁用掉按钮，防止重复提交
@@ -111,7 +136,7 @@
         $.ajax({
           type: "POST",
           url: "/submit_order",
-          data: "list=" + JSON.stringify(shopping_cart) + "&shop_name=" + shop_name + "&shop_id=" + shop_id,
+          data: "list=" + JSON.stringify(shopping_cart) + "&picmenu=" + JSON.stringify(picmenu_list) +"&shop_name=" + shop_name + "&shop_id=" + shop_id,
           dataType: 'json',
           success: function (data) {
             if (data.result == "success") {
@@ -140,6 +165,43 @@
 
     }
   });
+  // 加载完咱才知道图片大小啊
+  window.onload = function(){
+    $('#picmenu').click(function(e){ 
+      var x;
+      var y;
+      if (e.pageX || e.pageY) { 
+        x = e.pageX;
+        y = e.pageY;
+      }
+      else { 
+        x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft; 
+        y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop; 
+      } 
+      y -= $(this).offset().top;
+      x -= $(this).offset().left;
+      if(x + 100 < $(this).width() && y + 100 < $(this).height()){
+        $('<div class=""><span class="close">X</span></div>').css({
+          width: 100,
+          height: 100,
+          top: y,
+          left: x,
+          border: 'solid 1px black',
+          position: 'absolute'
+        }).draggable({
+          containment: "#picmenu"
+        }).resizable({
+          containment: "#picmenu"
+        })
+        .appendTo('#picmenu').children('.close').css({
+          float: 'right'
+        }).click(function(){
+          $(this).parent().remove();
+          return false;
+        })
+      }
+    });
+  };
 
   function create_car_item(food) {
     return '<tr id="car-' + food.id + '" data-id="' + food.id + '"><td class="ttl">' + food.name + '</td><td width="40"><select class="cart_o_num">' +

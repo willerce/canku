@@ -39,6 +39,14 @@
         <%}%>
       </section>
     </section>
+    <% if(shop.picmenu){ %>
+    <h1 class="page-title">其他
+      <small>管理员太懒了，直接放了一张图片在这里让你用鼠标戳</small>
+    </h1>
+    <section class="hero-unit clearfix" id="picmenu" style="position: relative;">
+      <img src="<%=shop.picmenu%>" class="img-rounded" style="width:100%;" />
+    </section>
+    <% } %>
   </div>
   <div class="right">
     <section id="cart">
@@ -74,5 +82,7 @@
   </div>
 </div>
 <script src="/js/jquery.reveal.js" type="text/javascript"></script>
+<link href="/jqueryui-tagging/css/ui-lightness/jquery-ui-1.10.0.custom.css" rel="stylesheet" />
+<script type="text/javascript" src="/jqueryui-tagging/js/jquery-ui-1.10.0.custom.js"></script>
 <script type="text/javascript" src="/js/cart.js"></script>
 <% include footer %>
