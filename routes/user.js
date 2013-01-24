@@ -150,7 +150,7 @@ exports.auth = function (req, res, next) {
 
     db.user.findOne({'name': user_name}, function (err, user) {
       if (!err && user) {
-        if(user.email == config.admin_user_email)
+        if (user.email == config.admin_user_email)
           user.isAdmin = true
         req.session.user = user;
         return next();
@@ -182,7 +182,7 @@ exports.auth_admin = function (req, res, next) {
     var user_name = auth[0];
     db.user.findOne({'name': user_name}, function (err, user) {
       if (!err && user) {
-        if(user.email == config.admin_user_email)
+        if (user.email == config.admin_user_email)
           user.isAdmin = true
         req.session.user = user;
 
@@ -386,40 +386,38 @@ exports.forgetPassword = function (req, res) {
         break;
     }
     return res.render('user/forgetPassword', {tip: tip});
-  } else {
-    if (req.method == "POST") {
-      //判断邮箱存在否
-      db.user.findOne({'email': req.body.email}, function (err, result) {
-        if (!err) {
-          if (result) {
-            var rand = Math.floor(Math.random() * 90000000);//随机生成一个数字
-            var randPwd = Date.now() + rand;
-            var newPassword = util.md5(String(randPwd));
-            result.password = newPassword;
-            delete result._id;
-            db.user.update({"email": req.body.email}, {'$set': result}, function (err) {
-              if (err) {
-                res.redirect('/user/forgetPassword?tip=error');
-              } else {
-                //如果邮箱存在，则发送密码
-                util.sendMail({
-                  to: req.body.email,
-                  subject: '餐库新密码',
-                  text: '你的新密码是' + randPwd + '请用此密码登陆，然后重置你的密码'
-                }, function (err) {
-                  if (err) return res.redirect('/user/forgetPassword?tip=sendfail');
-                  res.redirect('/user/forgetPassword?tip=success');
-                });
-              }
-            });
-          } else {
-            res.redirect('/user/forgetPassword?tip=email_not_exist');
-          }
+  } else if (req.method == "POST") {
+    //判断邮箱存在否
+    db.user.findOne({'email': req.body.email}, function (err, result) {
+      if (!err) {
+        if (result) {
+          var rand = Math.floor(Math.random() * 90000000);//随机生成一个数字
+          var randPwd = Date.now() + rand;
+          var newPassword = util.md5(String(randPwd));
+          result.password = newPassword;
+          delete result._id;
+          db.user.update({"email": req.body.email}, {'$set': result}, function (err) {
+            if (err) {
+              res.redirect('/user/forgetPassword?tip=error');
+            } else {
+              //如果邮箱存在，则发送密码
+              util.sendMail({
+                to: req.body.email,
+                subject: '餐库新密码',
+                text: '你的新密码是：' + randPwd + '，请用此密码登陆后尽快修改密码'
+              }, function (err) {
+                if (err) return res.redirect('/user/forgetPassword?tip=sendfail');
+                res.redirect('/user/forgetPassword?tip=success');
+              });
+            }
+          });
         } else {
-          res.redirect('/user/forgetPassword?tip=error');
+          res.redirect('/user/forgetPassword?tip=email_not_exist');
         }
-      })
-    }
+      } else {
+        res.redirect('/user/forgetPassword?tip=error');
+      }
+    })
   }
 }
 
