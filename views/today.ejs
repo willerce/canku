@@ -26,7 +26,28 @@
         </tr>
         </thead>
         <tbody>
-        <% orders.orders.forEach(function(order){%>
+        <% orders.orders.forEach(function(order){ %>
+          <% if (order.user_name == locals.session.user.name) { %>
+        <tr data-id="<%=order._id%>" class="owner">
+          <td class="name user-<%=order.user_id%>"><%=order.user_name%></td>
+          <td class="food">
+            <ul>
+              <% order.order.forEach(function(food){ %>
+              <li><%=food.name%> - <%=food.price%>元 - <%=food.num%> 份</li>
+              <%})%>
+            </ul>
+          </td>
+          <td class="luck" data-luck="<%=order.luck%>">
+            <div class="bar" style="width:<%=order.luck*0.9%>px"><%=order.luck%></div>
+          </td>
+          <td class="total">
+            ￥<%=order.total%>
+          </td>
+          <td class="cancel-order">
+            <a href="/user/order/delete/<%= order._id %>" class="buy-btn">取消订单</a>
+          </td>
+        </tr>
+          <% } else { %>
         <tr data-id="<%=order._id%>">
           <td class="name user-<%=order.user_id%>"><%=order.user_name%></td>
           <td class="food">
@@ -43,6 +64,7 @@
             ￥<%=order.total%>
           </td>
         </tr>
+          <% } %>
         <%})%>
         </tbody>
         <tfoot>
@@ -87,4 +109,13 @@
   </div>
   <%}%>
 </div>
+<script>
+(function(){
+  $(".owner").hover(function(){
+    $(".cancel-order").css({"display": "block"});
+  },function(){
+    $(".cancel-order").css({"display": "none"});
+  })
+})()
+</script>
 <% include footer %>

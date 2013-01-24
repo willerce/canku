@@ -105,6 +105,7 @@ exports.food_add = function (req, res) {
         //获取食品
         db.food.find({'shop_id':req.query['shop_id']}).sort({category:1}).toArray(function (err, foods) {
           if (!err) {
+            console.log(util.get_week);
             res.render('admin/food/add', {'shop':shop, 'foods':foods, week:util.get_week});
           } else {
             console.log('获取店铺出错了，ID是：' + req.params.id);
@@ -121,7 +122,6 @@ exports.food_add = function (req, res) {
     var price = req.body.price;
     var week = req.body.week;
     var category = req.body.categories;
-
     // TODO 这里需要做输入验证
 
     var food = {
@@ -230,3 +230,26 @@ exports.user_operateShop = function(req, res){
     });
   });
 } 
+
+exports.food_delete = function (req, res) {
+  var id = req.params.id;
+  db.food.remove({"_id":db.ObjectID.createFromHexString(id)}, function (err, result) {
+    if (!err) {
+      res.send(200);
+    }
+  });
+};
+
+
+exports.shop_delete = function (req, res) {
+  var id = req.params.id;
+  db.shop.remove({"_id":db.ObjectID.createFromHexString(id)}, function (err, result) {
+    if(!err){
+      db.food.remove({"shop_id": id}, function (err) {
+        if (!err) {
+          res.send(200);
+        }
+      })      
+    }
+  });
+}

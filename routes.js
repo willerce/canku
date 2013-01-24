@@ -25,6 +25,7 @@ module.exports = function(app){
   app.get('/user/register', user.register);
   app.post('/user/register', user.register);
   app.get('/user/order', user.auth, user.order);
+  app.get('/user/order/delete/:id', user.auth, user.deleteOrder);
   app.get('/user/account', user.auth, user.account);
   app.post('/user/account', user.auth, user.account);
   app.get('/user/forgetPassword',user.forgetPassword);
@@ -43,9 +44,11 @@ module.exports = function(app){
   app.post('/admin/shop/add', user.auth_admin, admin.shop_add);
   app.get('/admin/shop/edit/:id', user.auth_admin, admin.shop_edit);
   app.post('/admin/shop/edit/:id', user.auth_admin, admin.shop_edit);
+  app.get('/admin/shop/delete/:id', user.auth_admin, admin.shop_delete);
   app.get('/admin/food/add',user.auth_admin, admin.food_add);
   app.post('/admin/food/add',user.auth_admin, admin.food_add);
   app.get('/admin/food/edit/:id',user.auth_admin, admin.food_edit);
+  app.get('/admin/food/delete/:id', user.auth_admin, admin.food_delete);
   app.post('/admin/food/edit/:id',user.auth_admin, admin.food_edit);
   app.get('/admin/user',user.auth_admin, admin.user_index);
   app.get('/admin/user/orders/:id',user.auth_admin, admin.user_orders);

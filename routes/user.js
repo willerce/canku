@@ -420,3 +420,19 @@ exports.forgetPassword = function(req, res){
 }
 
 
+// URL: /user/order/delete/:id
+
+exports.deleteOrder = function (req, res) {
+  id = req.params.id;
+  db.order.findOne({"_id": db.ObjectID.createFromHexString(id)}, function(err, order){
+    if (err) return res.send(err);
+    if (order.user_name == req.session.user.name) {
+      db.order.remove({"_id": db.ObjectID.createFromHexString(id)}, function(err, result){
+        if (err) return res.send("取消订单失败");
+        res.redirect('/today');
+      });
+    } else {
+      res.send("你没有权限删除别人的订餐");
+    }
+  });
+}

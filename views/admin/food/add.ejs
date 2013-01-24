@@ -20,7 +20,7 @@
           <td><%=food.name%></td>
           <td><%=food.price%> 元</td>
           <td><%=week[food.week]%></td>
-          <td><a href="/admin/food/edit/<%=food._id%>" target="_blank">编辑</a></td>
+          <td><a href="/admin/food/edit/<%=food._id%>" target="_blank">编辑</a>|<a food-id="<%=food._id%>" id="deleteFood" href="javascript:void(0)" >删除</a></td>
         </tr>
         <% })%>
         </tbody>
@@ -71,4 +71,51 @@
     </div>
   </div>
 </div>
+<!-- Modal -->
+  <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close cancel" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel">删除菜谱</h3>
+    </div>
+    <div class="modal-body">
+      <p>确定删除这盘菜？</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary sure">确定</button>
+      <button class="btn btn-danger cancel" data-dismiss="modal" aria-hidden="true">取消</button>
+      
+    </div>
+  </div>
+  <script>
+  //监听删除食谱的按钮
+  $("#deleteFood").live('click', function(){
+    var id = $(this).attr("food-id");
+    var that = $(this);
+    //弹出选择是否删除窗口
+    $('#myModal').modal({
+          keyboard: true,
+          show: true,
+          backdrop: true
+        });
+    //管理员取消
+    $(".cancel").live('click',function(){
+        return ;
+    })
+    //管理员确定则执行删除操作
+    $(".sure").live('click',function(){
+      $("#myModal").hide();
+      $.ajax({
+        url: '/admin/food/delete/' + id,
+        type: 'GET',
+        data: {timeStamp:new Date().getTime()},
+        error: function(){
+          alert('网络错误，请联系管理员');
+        },
+        success: function(data){
+          that.closest("tr").remove();
+        }
+      })
+    })     
+  })
+  </script>
 <% include ../footer %>
