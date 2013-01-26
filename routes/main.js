@@ -154,7 +154,7 @@ exports.shop = function (req, res, next) {
             }
           }
           //检查有没有图片菜单
-          fs.exists(path.join(__dirname, '..', 'public', 'picmenu' + req.params.id + '.jpg'), function (exists){
+          path.exists(path.join(__dirname, '..', 'public', 'picmenu' + req.params.id + '.jpg'), function (exists){
             shop.picmenu = exists ? '/picmenu' + req.params.id + '.jpg': '';
             //页面渲染
             res.render('shop', {'shop':shop, 'group':group});

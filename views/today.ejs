@@ -55,6 +55,7 @@
               <% order.order.forEach(function(food){ %>
               <li><%=food.name%> - <%=food.price%>元 - <%=food.num%> 份</li>
               <%})%>
+              <%if(order.picmenu){%>
               <% order.picmenu.forEach(function(food){ %>
               <li>
                 <div style="position:relative;overflow:hidden;width:<%=food.itemwidth%>px;height:<%=food.itemheight%>px;">
@@ -62,6 +63,7 @@
                 </div>
               </li>
               <%})%>
+              <%}%>
             </ul>
           </td>
           <td class="luck" data-luck="<%=order.luck%>">
@@ -94,7 +96,9 @@
           <td><%=orders.analytics[key].name%> - <%=orders.analytics[key].num%>份</td>
         </tr>
         <%}%>
-        <% orders.orders.forEach(function(order){ order.picmenu.forEach(function(food){ %>
+        <% orders.orders.forEach(function(order){
+         if(order.picmenu){
+         order.picmenu.forEach(function(food){ %>
         <tr>
           <td>
             <div style="position:relative;overflow:hidden;width:<%=food.itemwidth%>px;height:<%=food.itemheight%>px;">
@@ -102,7 +106,7 @@
             </div>
           </td>
         </tr>
-        <%})})%>
+        <%})}})%>
         </tbody>
         <tfoot>
         <tr style="text-align: right;background: #f9f9f9;">
