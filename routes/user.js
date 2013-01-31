@@ -109,7 +109,7 @@ exports.register = function (req, res) {
 
             // 向数据库保存用户的数据，并进行 session 保存      /*添加管理权限字段 isAdmin canOperateShop*/
             db.user.insert({'name': name, 'email': email, reg_time: reg_time, 'password': password, 'isAdmin': false, 'canOperateShop': false}, function (err, user) {
-              if (!err & user.length > 0) {
+              if (!err && user && user.length > 0) {
                 if (user.length > 0) {
                   util.gen_session(user[0].name, user[0].password, res);
                   req.session.user = user[0];
