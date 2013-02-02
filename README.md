@@ -27,6 +27,7 @@ canku 是一个使用 nodejs 编写的多人订餐程序，使用了 [express](h
 
 店铺管理管理地址： http://yourname.com/admin
 
+如果注册时提示`注册失败，请重试`请检查mongodb是否在运行（例如：可通过命令`mongo localhost/canku`连接数据库）
 
 ## 添加店铺
 
