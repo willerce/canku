@@ -19,6 +19,8 @@ canku 是一个使用 nodejs 编写的多人订餐程序，使用了 [express](h
 
     git clone git@github.com:willerce/noderce.git
 
+你需要在本机启动好 MongoDB 服务，如果需要测试数据，请看[这里](https://github.com/willerce/canku/issues/17)
+
 复制一份global.default.js，保存为 复制一份global.js，根据注释，修改参数。
 
 运行 npm install 安装依赖包
