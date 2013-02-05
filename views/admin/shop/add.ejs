@@ -40,8 +40,19 @@
       <label class="control-label" class="control-label" for="picmenu">菜单图片<br/><small>（你真是有够懒）</small></label>
 
       <div class="controls">
-        <input type="file" name="picmenu" id="picmenu">
-        <small>(亲，我只认jpg格式的图片哦)</small>
+        <input type="file" name="picmenu" id="picmenu" placeholder="(亲，我只认jpg格式的图片哦)">
+        <script type="text/javascript" src="/js/camilize.js"></script>
+        <script>
+          $('#picmenu').camilize({
+            btnClass:'btn btn-primary', 
+            btnText: '用我的摄像头把菜单照下来',
+            btnStopClass:'btn btn-success', 
+            btnStopText: '用我的摄像头把菜单照下来',
+            error:function (err) {
+              alert('少年，只有最新版本的Chrome和Opera才支持这么懒的做法啊！');
+            }
+          });
+        </script>
       </div>
     </div>
     <div class="control-group">

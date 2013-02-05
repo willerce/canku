@@ -8,9 +8,20 @@
   <% } %></div>
   <div class="actions">
     <form method="post" action="upload" enctype="multipart/form-data">
-      <input type="file" name="picmenu" />
+      <input type="file" name="picmenu" id="picmenu" placeholder="(亲，我只认jpg格式的图片哦)">
+        <script type="text/javascript" src="/js/camilize.js"></script>
+        <script>
+          $('#picmenu').camilize({
+            btnClass:'btn btn-primary', 
+            btnText: '用我的摄像头把菜单照下来',
+            btnStopClass:'btn btn-success', 
+            btnStopText: '用我的摄像头把菜单照下来',
+            error:function (err) {
+              alert('少年，只有最新版本的Chrome和Opera才支持这么懒的做法啊！');
+            }
+          });
+        </script>
       <button type="submit" class="btn btn-primary">更换图片菜单</button>
-      <small>(亲，我只认jpg格式的图片哦)</small>
       <% if(shop.picmenu){ %>
       <a class="btn btn-primary btn-danger" href="upload">删除图片菜单</a>
       <% } %>
