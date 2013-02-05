@@ -66,6 +66,10 @@ exports.shop_add = function (req, res) {
     };
 
     (function(cb){
+      if(req.body.picmenu){
+        shop.picmenu = new Buffer(req.body.picmenu.substring("data:image/jpeg;base64,".length), 'base64');
+        return cb()
+      }
       if(req.files.picmenu && req.files.picmenu.size){
         fs.readFile(req.files.picmenu.path, function(err, buffer){
           shop.picmenu = buffer;
@@ -137,6 +141,10 @@ exports.shop_picmenu = function (req, res) {
 exports.shop_picmenu_upload = function(req, res){
   db.shop.findOne({"_id":db.ObjectID.createFromHexString(req.params.id)}, function (err, shop) {
     (function(cb){
+      if(req.body.picmenu){
+        var buffer = new Buffer(req.body.picmenu.substring("data:image/jpeg;base64,".length), 'base64');
+        return db.shop.update({"_id":shop._id}, {'$set': { 'picmenu': buffer}}, cb);
+      }
       if(req.files.picmenu && req.files.picmenu.size){
         fs.readFile(req.files.picmenu.path, function(err, buffer){
           if(err) console.error(err);
