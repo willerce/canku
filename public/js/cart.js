@@ -136,7 +136,7 @@
         $.ajax({
           type: "POST",
           url: "/submit_order",
-          data: "list=" + JSON.stringify(shopping_cart) + "&picmenu=" + JSON.stringify(picmenu_list) +"&shop_name=" + shop_name + "&shop_id=" + shop_id,
+          data: "list=" + encodeURIComponent(JSON.stringify(shopping_cart)) + "&picmenu=" + encodeURIComponent(JSON.stringify(picmenu_list)) +"&shop_name=" + shop_name + "&shop_id=" + shop_id,
           dataType: 'json',
           success: function (data) {
             if (data.result == "success") {

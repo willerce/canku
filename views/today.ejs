@@ -23,6 +23,7 @@
           <th class="food">订单内容</th>
           <th class="random">运气值</th>
           <th class="total">共计</th>
+          <th class="cancel"></th>
         </tr>
         </thead>
         <tbody>
@@ -35,6 +36,15 @@
               <% order.order.forEach(function(food){ %>
               <li><%=food.name%> - <%=food.price%>元 - <%=food.num%> 份</li>
               <%})%>
+              <%if(order.picmenu){%>
+              <% order.picmenu.forEach(function(food){ %>
+              <li>
+                <div style="position:relative;overflow:hidden;width:<%=food.itemwidth%>px;height:<%=food.itemheight%>px;">
+                  <img src="<%=food.picmenu%>" style="position:absolute;left:<%=food.left%>px;top:<%=food.top%>px;width:<%=food.width%>px;height:<%=food.height%>px;" />
+                </div>
+              </li>
+              <%})%>
+              <%}%>
             </ul>
           </td>
           <td class="luck" data-luck="<%=order.luck%>">
@@ -43,8 +53,8 @@
           <td class="total">
             ￥<%=order.total%>
           </td>
-          <td class="cancel-order">
-            <a href="/user/order/delete/<%= order._id %>" class="buy-btn">取消订单</a>
+          <td>
+            <a href="/user/order/delete/<%= order._id %>" class="buy-btn cancel-order">取消订单</a>
           </td>
         </tr>
           <% } else { %>
@@ -78,7 +88,7 @@
         </tbody>
         <tfoot>
         <tr style="text-align: right;background: #f9f9f9;">
-          <td colspan="4">
+          <td colspan="5">
             共计：<b><%=orders.totalPrice%></b> 元（价格不包括图片中的）
           </td>
         </tr>
@@ -132,9 +142,9 @@
 <script>
 (function(){
   $(".owner").hover(function(){
-    $(".cancel-order").css({"display": "block"});
+    $(".cancel-order").css({"visibility": "visible"});
   },function(){
-    $(".cancel-order").css({"display": "none"});
+    $(".cancel-order").css({"visibility": "hidden"});
   })
 })()
 </script>

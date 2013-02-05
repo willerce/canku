@@ -65,18 +65,24 @@ exports.shop_add = function (req, res) {
       'css':req.body.css,
     };
 
-    db.shop.insert(shop, function (err, result) {
-      if (!err) {
-        console.log(result);
-        if(req.files.picmenu && req.files.picmenu.size){
-          fs.createReadStream(req.files.picmenu.path).pipe(fs.createWriteStream(path.join(__dirname, '..', 'public', 'picmenu' + result[0]._id + '.jpg'))).on('close', function(){
-            res.redirect('/admin/shop');
-          });
-        } else {
+    (function(cb){
+      if(req.files.picmenu && req.files.picmenu.size){
+        fs.readFile(req.files.picmenu.path, function(err, buffer){
+          shop.picmenu = buffer;
+          cb(err);
+        })
+      }
+      else{
+        cb()
+      }
+
+    })(function(err){
+      db.shop.insert(shop, function (err, result) {
+        if (!err) {
           res.redirect('/admin/shop');
         }
-      }
-    });
+      });
+    })
   }
 };
 
@@ -103,15 +109,24 @@ exports.shop_edit = function (req, res) {
       }
     })
   }
-  ;
 };
 
 
 exports.shop_picmenu = function (req, res) {
   db.shop.findOne({"_id":db.ObjectID.createFromHexString(req.params.id)}, function (err, shop) {
-    fs.exists(path.join(__dirname, '..', 'public', 'picmenu' + req.params.id + '.jpg'), function (exists){
-      shop.picmenu = exists ? '/picmenu' + req.params.id + '.jpg': '';
-      console.log(shop);
+    (function(cb){
+      if(shop.picmenu){
+        shop.picmenu = "data:image/jpeg;base64," + shop.picmenu.buffer.toString('base64');
+        cb();
+      }else
+      {
+        fs.exists(path.join(__dirname, '..', 'public', 'picmenu' + req.params.id + '.jpg'), function (exists){
+          shop.picmenu = exists ? '/picmenu' + req.params.id + '.jpg': '';
+          cb();
+        });
+      }
+
+    })(function(err){
       res.render('admin/shop/picmenu', {
         "shop": shop
       });
@@ -120,15 +135,23 @@ exports.shop_picmenu = function (req, res) {
 };
 
 exports.shop_picmenu_upload = function(req, res){
-  if(req.files.picmenu && req.files.picmenu.size){
-    fs.createReadStream(req.files.picmenu.path).pipe(fs.createWriteStream(path.join(__dirname, '..', 'public', 'picmenu' + req.params.id + '.jpg'))).on('close', function(){
+  db.shop.findOne({"_id":db.ObjectID.createFromHexString(req.params.id)}, function (err, shop) {
+    (function(cb){
+      if(req.files.picmenu && req.files.picmenu.size){
+        fs.readFile(req.files.picmenu.path, function(err, buffer){
+          if(err) console.error(err);
+          db.shop.update({"_id":shop._id}, {'$set': { 'picmenu': buffer}}, cb);
+        });
+      } else {
+        db.shop.update({"_id":shop._id}, {'$unset': { 'picmenu': -1 }} , function(err){
+          if(err) console.error(err);
+          fs.unlink(path.join(__dirname, '..', 'public', 'picmenu' + req.params.id + '.jpg'), cb);
+        });
+      }
+    })(function(){
       res.redirect('back');
     });
-  } else {
-    fs.unlink(path.join(__dirname, '..', 'public', 'picmenu' + req.params.id + '.jpg'), function (err) {
-      res.redirect('back');
-    });
-  }
+  });
 };
 
 exports.food_add = function (req, res) {

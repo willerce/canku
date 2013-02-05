@@ -165,7 +165,7 @@ body { position: relative; color: #333; font-weight: normal; line-height: 20px;}
 #today-list { width: 55% }
 #today-list .owner { background: #888888; }
 #tbody-list .owner .luck .bar { background: #ffffff; }
-.cancel-order { display: none; }
+.cancel-order { visibility: hidden; }
 #today-analytics { float: right; width: 40% }
 .today-tb { float: left }
 .today-tb td, .today-tb th { padding: 3px 10px; border: 1px solid #ccc }
