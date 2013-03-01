@@ -43,30 +43,37 @@ exports.today = function (req, res, next) {
         //将店铺加到数组中
         group[shop_id].orders.push(order);
 
-        //累计这个店铺订单的总价
-        group[shop_id].totalPrice += order.total;
-
         //比较运气值，找到比较差的那个
         if (order.luck <= group[shop_id].minLuck.luck) {
-          group[shop_id].minLuck = order;
-        }
-
-
-        //统计各种美食数量
-        for (var j in order.order) {
-          //累计总数量
-          group[shop_id].totalNum += parseInt(order.order[j].num);
-
-          if (group[shop_id].analytics[order.order[j].id] == undefined) {
-            group[shop_id].analytics[order.order[j].id] = {name:order.order[j].name, num:parseFloat(orders[i].order[j].num)};
-          } else {
-            group[shop_id].analytics[order.order[j].id].num = parseFloat(group[shop_id].analytics[order.order[j].id].num) + parseFloat(order.order[j].num);
+          if (!order.canceled || //如果订单没被取消
+            orders.filter(function(o){//或者[订单所有者[在今天有[没取消的订单]]]
+            return o.user_name==order.user_name && !o.canceled
+          }).length){
+            group[shop_id].minLuck = order;
           }
         }
-        //统计各种图片菜单点餐项
-        for(var j in order.picmenu){
-          group[shop_id].totalNum ++;
-          
+
+        if(!order.canceled){
+          //累计这个店铺订单的总价
+          group[shop_id].totalPrice += order.total;
+
+
+          //统计各种美食数量
+          for (var j in order.order) {
+            //累计总数量
+            group[shop_id].totalNum += parseInt(order.order[j].num);
+
+            if (group[shop_id].analytics[order.order[j].id] == undefined) {
+              group[shop_id].analytics[order.order[j].id] = {name:order.order[j].name, num:parseFloat(orders[i].order[j].num)};
+            } else {
+              group[shop_id].analytics[order.order[j].id].num = parseFloat(group[shop_id].analytics[order.order[j].id].num) + parseFloat(order.order[j].num);
+            }
+          }
+          //统计各种图片菜单点餐项
+          for(var j in order.picmenu){
+            group[shop_id].totalNum ++;
+            
+          }
         }
         i++;
 
@@ -198,7 +205,18 @@ exports.submit_order = function (req, res) {
   }
 
   //插入订单
-  db.order.insert({shop_id:shop_id, shop_name:shop_name, user_id:req.session.user._id, user_name:req.session.user.name, time:util.getUTC8Time("YYYY-MM-DD HH:mm:ss"), total:total, order:order_list, picmenu:picmenu, luck:luck}, function (err, result) {
+  db.order.insert({
+      shop_id:shop_id, 
+      shop_name:shop_name, 
+      user_id:req.session.user._id, 
+      user_name:req.session.user.name, 
+      time:util.getUTC8Time("YYYY-MM-DD HH:mm:ss"), 
+      total:total, 
+      order:order_list, 
+      picmenu:picmenu, 
+      luck:luck,
+      canceled: false
+    }, function (err, result) {
     if (!err) {
       console.log(result);
       res.send('{"result":"success","luck":"' + luck + '"}');
