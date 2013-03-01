@@ -43,14 +43,19 @@ exports.today = function (req, res, next) {
         //将店铺加到数组中
         group[shop_id].orders.push(order);
 
+        //比较运气值，找到比较差的那个
+        if (order.luck <= group[shop_id].minLuck.luck) {
+          if (!order.canceled || //如果订单没被取消
+            orders.filter(function(o){//或者[订单所有者[在今天有[没取消的订单]]]
+            return o.user_name==order.user_name && !o.canceled
+          }).length){
+            group[shop_id].minLuck = order;
+          }
+        }
+
         if(!order.canceled){
           //累计这个店铺订单的总价
           group[shop_id].totalPrice += order.total;
-
-          //比较运气值，找到比较差的那个
-          if (order.luck <= group[shop_id].minLuck.luck) {
-            group[shop_id].minLuck = order;
-          }
 
 
           //统计各种美食数量
