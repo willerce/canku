@@ -29,7 +29,7 @@ exports.login = function (req, res) {
     res.render('user/login', {tip: tip});
   } else if (req.method == "POST") {
 
-    var reMail = /^(?:[a-zd]+[_\-+.]?)*[a-zd]+@(?:([a-zd]+-?)*[a-zd]+.)+([a-z]{2,})+$/i;
+    var reMail = /^(?:[a-zA-Z0-9]+[_\-\+\.]?)*[a-zA-Z0-9]+@(?:([a-zA-Z0-9]+[_\-]?)*[a-zA-Z0-9]+\.)+([a-zA-Z]{2,})+$/;
     var account = req.body.account;
     var password = util.md5(req.body.password);
 

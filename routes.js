@@ -44,8 +44,6 @@ module.exports = function(app){
   app.post('/admin/shop/add', user.auth_admin, admin.shop_add);
   app.get('/admin/shop/edit/:id', user.auth_admin, admin.shop_edit);
   app.post('/admin/shop/edit/:id', user.auth_admin, admin.shop_edit);
-  app.get('/admin/shop/picmenu/:id', user.auth_admin, admin.shop_picmenu);
-  app.all('/admin/shop/picmenu/:id/upload', user.auth_admin, admin.shop_picmenu_upload);
   app.get('/admin/shop/delete/:id', user.auth_admin, admin.shop_delete);
   app.get('/admin/food/add',user.auth_admin, admin.food_add);
   app.post('/admin/food/add',user.auth_admin, admin.food_add);

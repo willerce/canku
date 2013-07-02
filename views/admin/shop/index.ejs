@@ -1,13 +1,12 @@
 <% include ../header %>
-  <h2>店铺列表</h2>
+  <h2>店铺列表<a style="margin-left: 50px;" class="btn btn-inverse" href="/admin/shop/add">添加店铺</a></h2>
   <table class="table table-striped">
     <thead>
       <tr>
         <th>名称</th>
         <th>电话</th>
         <th>地址</th>
-        <th>操作店铺</th>
-        <th>管理美食</th>
+        <th>操作</th>
       </tr>
     </thead>
     <tbody>
@@ -18,19 +17,13 @@
         <td><%=shop.address%></td>
         <td>
           <a class="btn btn-primary btn-small" href="/admin/shop/edit/<%=shop._id %>">编辑店铺</a>
-          <a class="btn btn-primary btn-small" id="deleteShop" shop-id="<%=shop._id %>">删除店铺</a>
-        </td>
-        <td>
-          <a class="btn btn-primary btn-small" href="/admin/food/add?shop_id=<%=shop._id %>">管理美食</a>
-          <a class="btn btn-primary btn-small" href="/admin/shop/picmenu/<%=shop._id %>/">图片菜单</a>
+          <a class="btn btn-primary btn-small" href="/admin/food/add?shop_id=<%=shop._id %>">编辑美食菜单</a>
+          <a class="btn btn-danger btn-small" id="deleteShop" shop-id="<%=shop._id %>">删除店铺</a>
         </td>
       </tr>
     <% }) %>
     </tbody>
   </table>
-  <div class="actions">
-    <a class="btn btn-primary" href="/admin/shop/add">添加店铺</a>
-  </div>
   <!-- Modal -->
   <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">

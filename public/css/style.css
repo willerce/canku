@@ -163,8 +163,6 @@ body { position: relative; color: #333; font-weight: normal; line-height: 20px;}
 .today_null .txt { padding: 15px 0 20px 135px; background: #fff url('../img/empty.gif') no-repeat 10px 5px ;}
 .today_null .txt h3{font-size: 30px; line-height: 30px; margin-bottom: 20px;}
 #today-list { width: 55% }
-#today-list .owner { background: #888888; }
-#tbody-list .owner .luck .bar { background: #ffffff; }
 .cancel-order { visibility: hidden; }
 #today-analytics { float: right; width: 40% }
 .today-tb { float: left }

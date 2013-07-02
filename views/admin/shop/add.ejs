@@ -26,33 +26,23 @@
       <label class="control-label" class="control-label" for="categories">分类</label>
 
       <div class="controls">
-        <textarea name="categories" id="categories" cols="30" rows="3"></textarea>
+        <textarea name="categories" class="span7" id="categories" cols="30" rows="3"></textarea>
+        <div>
+          <b>格式：</b>数字编号#分类名|数字编号#分类名<br/>
+          <b>例如：</b>1#商务套餐|2#营养套餐|3#其它
+        </div>
       </div>
+
     </div>
     <div class="control-group">
       <label class="control-label" for="tel">样式</label>
 
       <div class="controls">
         <textarea name="css" id="css" class="span7" rows="4"></textarea>
-      </div>
-    </div>
-    <div class="control-group">
-      <label class="control-label" class="control-label" for="picmenu">菜单图片<br/><small>（你真是有够懒）</small></label>
-
-      <div class="controls">
-        <input type="file" name="picmenu" id="picmenu" placeholder="(亲，我只认jpg格式的图片哦)">
-        <script type="text/javascript" src="/js/camilize.js"></script>
-        <script>
-          $('#picmenu').camilize({
-            btnClass:'btn btn-primary', 
-            btnText: '用我的摄像头把菜单照下来',
-            btnStopClass:'btn btn-success', 
-            btnStopText: '用我的摄像头把菜单照下来',
-            error:function (err) {
-              alert('少年，只有最新版本的Chrome和Opera才支持这么懒的做法啊！');
-            }
-          });
-        </script>
+        <div>
+          <p>一行两列：.food-list li {width: 269px;} .food-list li:nth-child(even) {margin-right: 0; float:right;}</p>
+          <p>一行三列：.food-list li:nth-child(3n) {margin-right: 0;} </p>
+        </div>
       </div>
     </div>
     <div class="control-group">

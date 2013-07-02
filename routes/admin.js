@@ -16,95 +16,60 @@ db.bind('food');
 db.bind('user');
 
 exports.index = function (req, res) {
-  var nowtime = util.getUTC8Time("YYYY-MM-DD HH:mm:SS");
-  //var week = (new Date()).getDay().toString();
-  var week = util.get_week[util.getUTC8Day()];
-  if( req.session.user ){
-    //这里如果用户有超级管理权限则能看到用户列表，否则为空白
-    if ( req.session.user.isAdmin ){
-      var isAdmin = req.session.user.isAdmin;
-      db.user.find().sort( {reg_time: -1} ).toArray(function (err, users){
-        return res.render('admin/index', { title: '用户管理', nowtime: nowtime, week: week, isAdmin: isAdmin, users: users})  
-      });
-    }else{
-      return res.render('admin/index', { title:'Express', nowtime:nowtime, week:week, isAdmin: isAdmin});
-    }
-  }else{
-      return res.redirect(config.login_path);
-  }
-  
+  res.render('admin/index', {title: "后台管理"});
 };
 
 
 exports.shop_index = function (req, res) {
   db.shop.find({}).toArray(function (err, result) {
     if (!err) {
-      res.render('admin/shop/index', {shops:result});
+      res.render('admin/shop/index', {title: "店铺列表", shops: result});
     } else {
-      res.render('admin/shop/index', {});
+      res.render('admin/shop/index', {itle: "店铺列表", shops: []});
     }
   });
 };
 
 exports.shop_add = function (req, res) {
   if (req.method == "GET") {
-    res.render('admin/shop/add');
+    res.render('admin/shop/add', {title: "添加店铺"});
   }
   else if (req.method == "POST") {
     var name = req.body.name;
     var address = req.body.address;
     var tel = req.body.tel;
 
-    // TODO 这里需要做输入验证
-
     var shop = {
-      'name':name,
-      'address':address,
-      'tel':tel,
-      'categories':req.body.categories,
-      'css':req.body.css,
+      'name': name,
+      'address': address,
+      'tel': tel,
+      'categories': req.body.categories,
+      'css': req.body.css,
     };
 
-    (function(cb){
-      if(req.body.picmenu){
-        shop.picmenu = new Buffer(req.body.picmenu.substring("data:image/jpeg;base64,".length), 'base64');
-        return cb()
+    db.shop.insert(shop, function (err, result) {
+      if (!err) {
+        res.redirect('/admin/shop');
       }
-      if(req.files.picmenu && req.files.picmenu.size){
-        fs.readFile(req.files.picmenu.path, function(err, buffer){
-          shop.picmenu = buffer;
-          cb(err);
-        })
-      }
-      else{
-        cb()
-      }
-
-    })(function(err){
-      db.shop.insert(shop, function (err, result) {
-        if (!err) {
-          res.redirect('/admin/shop');
-        }
-      });
-    })
+    });
   }
 };
 
 exports.shop_edit = function (req, res) {
   if (req.method == "GET") {
-    db.shop.findOne({"_id":db.ObjectID.createFromHexString(req.params.id)}, function (err, shop) {
-      res.render('admin/shop/edit', {"shop":shop});
+    db.shop.findOne({"_id": db.ObjectID.createFromHexString(req.params.id)}, function (err, shop) {
+      res.render('admin/shop/edit', {title: "店铺编辑", "shop": shop});
     });
   } else if (req.method == "POST") {
     var shop = {
-      'name':req.body.name,
-      'address':req.body.address,
-      'tel':req.body.tel,
-      'categories':req.body.categories,
-      'css':req.body.css,
+      'name': req.body.name,
+      'address': req.body.address,
+      'tel': req.body.tel,
+      'categories': req.body.categories,
+      'css': req.body.css,
     };
 
-    db.shop.update({"_id":db.ObjectID.createFromHexString(req.body.id)}, {'$set':shop}, function (err) {
+    db.shop.update({"_id": db.ObjectID.createFromHexString(req.body.id)}, {'$set': shop}, function (err) {
       if (err) {
         console.log("err");
         res.redirect('/admin/shop?msg=error&action=edit');
@@ -115,62 +80,15 @@ exports.shop_edit = function (req, res) {
   }
 };
 
-
-exports.shop_picmenu = function (req, res) {
-  db.shop.findOne({"_id":db.ObjectID.createFromHexString(req.params.id)}, function (err, shop) {
-    (function(cb){
-      if(shop.picmenu){
-        shop.picmenu = "data:image/jpeg;base64," + shop.picmenu.buffer.toString('base64');
-        cb();
-      }else
-      {
-        fs.exists(path.join(__dirname, '..', 'public', 'picmenu' + req.params.id + '.jpg'), function (exists){
-          shop.picmenu = exists ? '/picmenu' + req.params.id + '.jpg': '';
-          cb();
-        });
-      }
-
-    })(function(err){
-      res.render('admin/shop/picmenu', {
-        "shop": shop
-      });
-    });
-  });
-};
-
-exports.shop_picmenu_upload = function(req, res){
-  db.shop.findOne({"_id":db.ObjectID.createFromHexString(req.params.id)}, function (err, shop) {
-    (function(cb){
-      if(req.body.picmenu){
-        var buffer = new Buffer(req.body.picmenu.substring("data:image/jpeg;base64,".length), 'base64');
-        return db.shop.update({"_id":shop._id}, {'$set': { 'picmenu': buffer}}, cb);
-      }
-      if(req.files.picmenu && req.files.picmenu.size){
-        fs.readFile(req.files.picmenu.path, function(err, buffer){
-          if(err) console.error(err);
-          db.shop.update({"_id":shop._id}, {'$set': { 'picmenu': buffer}}, cb);
-        });
-      } else {
-        db.shop.update({"_id":shop._id}, {'$unset': { 'picmenu': -1 }} , function(err){
-          if(err) console.error(err);
-          fs.unlink(path.join(__dirname, '..', 'public', 'picmenu' + req.params.id + '.jpg'), cb);
-        });
-      }
-    })(function(){
-      res.redirect('back');
-    });
-  });
-};
-
 exports.food_add = function (req, res) {
   if (req.method == 'GET') {
-    db.shop.findOne({'_id':db.ObjectID.createFromHexString(req.query['shop_id'])}, function (err, shop) {
+    db.shop.findOne({'_id': db.ObjectID.createFromHexString(req.query['shop_id'])}, function (err, shop) {
       if (!err) {
         //获取食品
-        db.food.find({'shop_id':req.query['shop_id']}).sort({category:1}).toArray(function (err, foods) {
+        db.food.find({'shop_id': req.query['shop_id']}).sort({category: 1}).toArray(function (err, foods) {
           if (!err) {
             console.log(util.get_week);
-            res.render('admin/food/add', {'shop':shop, 'foods':foods, week:util.get_week});
+            res.render('admin/food/add', {title: "添加美食", 'shop': shop, 'foods': foods, week: util.get_week});
           } else {
             console.log('获取店铺出错了，ID是：' + req.params.id);
             next();
@@ -186,14 +104,13 @@ exports.food_add = function (req, res) {
     var price = req.body.price;
     var week = req.body.week;
     var category = req.body.categories;
-    // TODO 这里需要做输入验证
 
     var food = {
-      'name':name,
-      'price':price,
-      'shop_id':shop_id,
-      'week':week,
-      'category':category
+      'name': name,
+      'price': price,
+      'shop_id': shop_id,
+      'week': week,
+      'category': category
     };
 
     db.food.insert(food, function (err, result) {
@@ -207,21 +124,21 @@ exports.food_add = function (req, res) {
 
 exports.food_edit = function (req, res) {
   if (req.method == "GET") {
-    db.food.findOne({"_id":db.ObjectID.createFromHexString(req.params.id)}, function (err, food) {
+    db.food.findOne({"_id": db.ObjectID.createFromHexString(req.params.id)}, function (err, food) {
       console.log(food);
-      db.shop.findOne({'_id':db.ObjectID.createFromHexString(food.shop_id)}, function (err, shop) {
-        res.render('admin/food/edit', {"food":food, "shop":shop});
+      db.shop.findOne({'_id': db.ObjectID.createFromHexString(food.shop_id)}, function (err, shop) {
+        res.render('admin/food/edit', {title: "编辑美食", "food": food, "shop": shop});
 
       });
     });
   } else {
-    db.food.findOne({"_id":db.ObjectID.createFromHexString(req.params.id)}, function (err, food) {
+    db.food.findOne({"_id": db.ObjectID.createFromHexString(req.params.id)}, function (err, food) {
       food.name = req.body.name;
       food.price = req.body.price;
       food.week = req.body.week;
       food.category = req.body.categories;
       delete food._id;
-      db.food.update({"_id":db.ObjectID.createFromHexString(req.params.id)}, {'$set':food}, function (err) {
+      db.food.update({"_id": db.ObjectID.createFromHexString(req.params.id)}, {'$set': food}, function (err) {
         if (err) {
           console.log("err");
           res.redirect('/admin/food/edit/' + req.params.id + '?msg=error&action=edit');
@@ -234,15 +151,25 @@ exports.food_edit = function (req, res) {
 };
 
 exports.user_index = function (req, res) {
-  db.user.find().toArray(function (err, users) {
-    res.render('admin/user/index', {users:users});
-  });
+  if (req.session.user) {
+    //这里如果用户有超级管理权限则能看到用户列表，否则为空白
+    if (req.session.user.isAdmin) {
+      var isAdmin = req.session.user.isAdmin;
+      db.user.find().sort({reg_time: -1}).toArray(function (err, users) {
+        return res.render('admin/user/index', { title: '用户管理', isAdmin: isAdmin, users: users})
+      });
+    } else {
+      return res.render('admin/user/index', { title: '用户管理', isAdmin: isAdmin});
+    }
+  } else {
+    return res.redirect(config.login_path);
+  }
 };
 
 exports.user_delete = function (req, res) {
   var id = req.params.id;
-  db.user.remove({"_id":db.ObjectID.createFromHexString(req.params.id)}, function (err, result) {
-    if(!err){
+  db.user.remove({"_id": db.ObjectID.createFromHexString(req.params.id)}, function (err, result) {
+    if (!err) {
       return res.send(200);
     }
   });
@@ -251,26 +178,26 @@ exports.user_delete = function (req, res) {
 exports.user_orders = function (req, res) {
   var id = req.params.id;
   //获取当前用户的ID{user_id:req.session.user._id}
-  db.order.find({user_id:id}).sort({time:-1}).toArray(function (err, result) {
+  db.order.find({user_id: id}).sort({time: -1}).toArray(function (err, result) {
     if (!err) {
-      res.render('admin/user/orders', {orders:result});
+      res.render('admin/user/orders', {title: "用户订单", orders: result});
     }
     ;
   });
 };
 
 
-exports.user_isAdmin = function(req, res){
+exports.user_isAdmin = function (req, res) {
   var id = req.params.id;
-  db.user.findOne({"_id": db.ObjectID.createFromHexString(id)},function (err, user){
-    if(user.isAdmin){
+  db.user.findOne({"_id": db.ObjectID.createFromHexString(id)}, function (err, user) {
+    if (user.isAdmin) {
       user.isAdmin = false;
-    }else{
+    } else {
       user.isAdmin = true;
     }
     delete user._id;
-    db.user.update({"_id": db.ObjectID.createFromHexString(id)},{'$set': user},function (err, result){
-      if(!err) {
+    db.user.update({"_id": db.ObjectID.createFromHexString(id)}, {'$set': user}, function (err, result) {
+      if (!err) {
         console.log(user);
         return res.send(user.isAdmin);
       }
@@ -278,26 +205,26 @@ exports.user_isAdmin = function(req, res){
   });
 }
 
-exports.user_operateShop = function(req, res){
+exports.user_operateShop = function (req, res) {
   var id = req.params.id;
-   db.user.findOne({"_id": db.ObjectID.createFromHexString(id) },function (err, user){
-    if(user.canOperateShop){
+  db.user.findOne({"_id": db.ObjectID.createFromHexString(id) }, function (err, user) {
+    if (user.canOperateShop) {
       user.canOperateShop = false;
-    }else{
+    } else {
       user.canOperateShop = true;
     }
     delete user._id;
-    db.user.update({"_id": db.ObjectID.createFromHexString(id)},{'$set': user},function (err, result){
-      if(!err) {
+    db.user.update({"_id": db.ObjectID.createFromHexString(id)}, {'$set': user}, function (err, result) {
+      if (!err) {
         return res.send(user.canOperateShop);
       }
     });
   });
-} 
+}
 
 exports.food_delete = function (req, res) {
   var id = req.params.id;
-  db.food.remove({"_id":db.ObjectID.createFromHexString(id)}, function (err, result) {
+  db.food.remove({"_id": db.ObjectID.createFromHexString(id)}, function (err, result) {
     if (!err) {
       res.send(200);
     }
@@ -307,13 +234,13 @@ exports.food_delete = function (req, res) {
 
 exports.shop_delete = function (req, res) {
   var id = req.params.id;
-  db.shop.remove({"_id":db.ObjectID.createFromHexString(id)}, function (err, result) {
-    if(!err){
+  db.shop.remove({"_id": db.ObjectID.createFromHexString(id)}, function (err, result) {
+    if (!err) {
       db.food.remove({"shop_id": id}, function (err) {
         if (!err) {
           res.send(200);
         }
-      })      
+      })
     }
   });
 }

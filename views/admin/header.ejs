@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>canku.me admin</title>
+  <title><%=title%></title>
   <script type="text/javascript" src="/js/jquery.js"></script>
   <script type="text/javascript" src="/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
@@ -11,19 +11,17 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
+      <a class="brand" href="/admin">餐库-管理后台</a>
       <div class="nav-collapse collapse">
         <ul class="nav">
           <li class="">
-            <a href="/">Home</a>
-          </li>
-          <li class="">
-            <a href="/admin/">Admin</a>
+            <a href="/admin/user">用户列表</a>
           </li>
           <li>
-            <a href="/admin/shop">Shop</a>
+            <a href="/admin/shop">店铺列表</a>
           </li>
           <li>
-            <a href="/user/logout">Logout</a>
+            <a href="/user/logout">注销</a>
           </li>
         </ul>
       </div>
