@@ -1,16 +1,17 @@
 {
   "name": "canku",
-  "version": "0.0.1",
+  "main": "app.js",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "start": "node app"
   },
   "dependencies": {
-    "express": "3.0.3",
-    "ejs": "0.8.3",
-    "mongoskin": "0.4.1",
-    "dateformat": "1.0.4-1.2.3",
-    "moment": "1.7.2",
-    "nodemailer": "0.3.37"
+    "express": "3.3.1",
+    "ejs": "0.8.4",
+    "mongoskin": "0.5.0",
+    "dateformat": "1.0.6-1.2.3",
+    "moment": "2.0.0",
+    "nodemailer": "0.4.4"
   }
 }
