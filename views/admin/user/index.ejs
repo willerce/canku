@@ -1,11 +1,11 @@
 <% include ../header %>
-<% if(isAdmin) {%>
 <h2>用户列表</h2>
 <table class="table table-striped">
   <thead>
   <tr>
     <th>昵称</th>
     <th>邮箱</th>
+    <th>余额</th>
     <th>注册时间</th>
     <th>超级管理员</th>
     <th>店铺管理员</th>
@@ -17,6 +17,7 @@
   <tr id="<%= user._id %>">
     <td><%= user.name %></td>
     <td><%= user.email %></td>
+    <td><%= parseFloat(user.balance || 0.0).toFixed(1) %></td>
     <td>
       <%= user.reg_time %>
     </td>
@@ -24,18 +25,19 @@
       <% if(user.isAdmin) {%>
       <a class="btn btn-warning btn-small Admin">撤销超级管理员</a>
       <% }else{ %>
-      <a class="btn btn-inverse btn-small Admin">授予超级管理员</a>
+      <a class="btn btn-primary btn-small Admin">授予超级管理员</a>
       <% } %>
     </td>
     <td>
       <% if(user.canOperateShop) {%>
       <a class="btn btn-warning btn-small Shoper">撤销店铺管理员</a>
       <% }else{%>
-      <a class="btn btn-inverse btn-small Shoper">授予店铺管理员</a>
+      <a class="btn btn-primary btn-small Shoper">授予店铺管理员</a>
       <% } %>
     </td>
     <td>
-      <a class="btn btn-danger btn-small" id = "deleteUser" >删除用户</a>
+      <a href="/admin/user/add_balance?user_id=<%=user._id%>" class="btn btn-primary btn-small" >冲值</a>
+      <a class="btn btn-danger btn-small" id="deleteUser" >删除</a>
     </td>
   </tr>
   <% }) %>
@@ -53,7 +55,6 @@
   <div class="modal-footer">
     <button class="btn btn-primary sure">确定</button>
     <button class="btn btn-danger cancel" data-dismiss="modal" aria-hidden="true">取消</button>
-
   </div>
 </div>
 <script type="text/javascript">
@@ -135,5 +136,4 @@
 
   })
 </script>
-<% } %>
 <% include ../footer %>

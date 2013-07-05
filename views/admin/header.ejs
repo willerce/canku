@@ -14,9 +14,11 @@
       <a class="brand" href="/admin">餐库-管理后台</a>
       <div class="nav-collapse collapse">
         <ul class="nav">
+          <% if (locals.session.user.isAdmin) { %>
           <li class="">
             <a href="/admin/user">用户列表</a>
           </li>
+          <% } %>
           <li>
             <a href="/admin/shop">店铺列表</a>
           </li>

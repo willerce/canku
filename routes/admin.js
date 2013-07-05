@@ -14,6 +14,7 @@ var dateformat = require('dateformat');
 db.bind('shop');
 db.bind('food');
 db.bind('user');
+db.bind('balance_logs');
 
 exports.index = function (req, res) {
   res.render('admin/index', {title: "后台管理"});
@@ -184,6 +185,56 @@ exports.user_orders = function (req, res) {
     }
     ;
   });
+};
+
+exports.user_add_balance = function (req, res) {
+
+  if (req.method === "GET") {
+    var user_id = req.query['user_id'];
+    var result = req.query['result'];
+    db.user.findOne({"_id": db.ObjectID.createFromHexString(user_id)}, function (err, user) {
+      res.render('admin/user/add_balance', {title: "冲值", user: user, result: result});
+    });
+
+  } else if (req.method === "POST") {
+
+    if(!req.session.user.isAdmin){
+      return
+    }
+
+    var user_id = req.body.user_id;
+    var amount = req.body.amount;
+
+    db.user.findOne({"_id": db.ObjectID.createFromHexString(user_id)}, function (err, user) {
+
+      var balance_log = {
+        created: util.getUTC8Time("YYYY-MM-DD HH:mm:ss"),
+        user_id: user_id,
+        type: 'recharge',//充值
+        amount: parseFloat(amount).toFixed(2),
+        balance: (parseFloat(user.balance || 0) + parseFloat(amount)).toFixed(2),
+        describe: req.session.user.name + "为你充值" + amount + "元人民币"
+      };
+
+      db.balance_logs.insert(balance_log, function (err, result) {
+        if (!err) {
+          //修改用户余额
+
+          user.balance = balance_log.balance;
+          delete user._id;
+          db.user.update({"_id": db.ObjectID.createFromHexString(user_id)}, {'$set': user}, function (err, user) {
+            if (!err) {
+              res.redirect('admin/user/add_balance?result=success&user_id=' + user_id);
+            } else {
+              next();
+            }
+          });
+        }
+      })
+
+    });
+  }
+
 };
 
 

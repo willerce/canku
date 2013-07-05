@@ -12,57 +12,23 @@
       <span class="shop_tel">电话：<%=orders.shop.tel%></span>
       <span class="shop_address">地址：<%=orders.shop.address%></span>
       <%if(orders.minLuck.user_name){%>
-      <span style="float: right;">目测，由 <strong><%=orders.minLuck.user_name%></strong>喂人民服务</span><%}%>
+      <span style="float: right;">目测，由 <strong><%=orders.minLuck.user_name%></strong>喂人民服务</span>
+      <%}%>
     </h1>
     <section class="main clearfix" style="margin-bottom: 20px">
       <section class="inner">
-        <table id="today-list" class="today-tb" cellpadding="0" cellspacing="0">
+        <table id="today-list" class="today-tb data" cellpadding="0" cellspacing="0">
           <thead>
           <tr>
-            <th class="name">用户名</th>
-            <th class="food">订单内容</th>
+            <th class="name">姓名</th>
+            <th class="food">订单明细</th>
+            <th class="total">应付</th>
             <th class="random">运气值</th>
-            <th class="total">共计</th>
-            <th class="cancel"></th>
+            <th class="payStatus">订单状态</th>
           </tr>
           </thead>
           <tbody>
           <% orders.orders.forEach(function(order){ %>
-          <% if (order.user_name == locals.session.user.name) { %>
-          <tr data-id="<%=order._id%>" class="owner">
-            <td class="name user-<%=order.user_id%>"><%=order.user_name%></td>
-            <td class="food">
-              <ul>
-                <% order.order.forEach(function(food){ %>
-                <li><%=food.name%> - <%=food.price%>元 - <%=food.num%> 份</li>
-                <%})%>
-                <%if(order.picmenu){%>
-                <% order.picmenu.forEach(function(food){ %>
-                <li>
-                  <div style="position:relative;overflow:hidden;width:<%=food.itemwidth%>px;height:<%=food.itemheight%>px;">
-                    <img src="<%=food.picmenu%>"
-                         style="position:absolute;left:<%=food.left%>px;top:<%=food.top%>px;width:<%=food.width%>px;height:<%=food.height%>px;"/>
-                  </div>
-                </li>
-                <%})%>
-                <%}%>
-              </ul>
-            </td>
-            <td class="luck" data-luck="<%=order.luck%>">
-              <div class="bar" style="width:<%=order.luck*0.9%>px"><%=order.luck%></div>
-            </td>
-            <td class="total">
-              ￥<%=order.total%>
-            </td>
-            <td>
-              <%if(order.canceled){%>
-              <div class="text-error">已取消</div>
-              <%}else{%>
-              <a href="/user/order/delete/<%= order._id %>" class="cancel-order">取消订单</a>
-              <%}%>
-            </td>
-          </tr>
-          <% } else { %>
           <tr data-id="<%=order._id%>">
             <td class="name user-<%=order.user_id%>"><%=order.user_name%></td>
             <td class="food">
@@ -70,43 +36,36 @@
                 <% order.order.forEach(function(food){ %>
                 <li><%=food.name%> - <%=food.price%>元 - <%=food.num%> 份</li>
                 <%})%>
-                <%if(order.picmenu){%>
-                <% order.picmenu.forEach(function(food){ %>
-                <li>
-                  <div style="position:relative;overflow:hidden;width:<%=food.itemwidth%>px;height:<%=food.itemheight%>px;">
-                    <img src="<%=food.picmenu%>"
-                         style="position:absolute;left:<%=food.left%>px;top:<%=food.top%>px;width:<%=food.width%>px;height:<%=food.height%>px;"/>
-                  </div>
-                </li>
-                <%})%>
-                <%}%>
               </ul>
-              s
             </td>
+            <td class="total">￥<%=order.total%></td>
             <td class="luck" data-luck="<%=order.luck%>">
               <div class="bar" style="width:<%=order.luck*0.9%>px"><%=order.luck%></div>
             </td>
-            <td class="total">
-              ￥<%=order.total%>
-            </td>
             <td>
-              <%if(order.canceled){%>
-              <div class="text-error">已取消</div>
-              <%}%>
+            <% if(order.canceled){ %>
+              <span class="text-error">已取消</span>
+            <% } else if (order.payStatus === "paid") { %>
+              <span>已支付</span>
+            <% } else if(order.user_name == locals.session.user.name){%>
+              <a href="/pay/item?order_id=<%= order._id %>" class="cancel-order">支付</a> |
+              <a href="/user/order/delete/<%= order._id %>" class="cancel-order">取消</a>
+            <% } else {%>
+              <span>未支付</span>
+            <% } %>
             </td>
           </tr>
-          <% } %>
           <%})%>
           </tbody>
           <tfoot>
           <tr style="text-align: right;background: #f9f9f9;">
-            <td colspan="5">
+            <td colspan="6">
               共计：<b><%=orders.totalPrice%></b> 元
             </td>
           </tr>
           </tfoot>
         </table>
-        <table id="today-analytics" class="today-tb">
+        <table id="today-analytics" class="today-tb data">
           <thead>
           <tr>
             <th>订餐统计清单</th>
@@ -118,18 +77,6 @@
             <td><%=orders.analytics[key].name%> - <%=orders.analytics[key].num%>份</td>
           </tr>
           <%}%>
-          <% orders.orders.forEach(function(order){
-          if(order.picmenu && !order.canceled){
-          order.picmenu.forEach(function(food){ %>
-          <tr>
-            <td>
-              <div style="position:relative;overflow:hidden;width:<%=food.itemwidth%>px;height:<%=food.itemheight%>px;">
-                <img src="<%=food.picmenu%>"
-                     style="position:absolute;left:<%=food.left%>px;top:<%=food.top%>px;width:<%=food.width%>px;height:<%=food.height%>px;"/>
-              </div>
-            </td>
-          </tr>
-          <%})}})%>
           </tbody>
           <tfoot>
           <tr style="text-align: right;background: #f9f9f9;">
@@ -153,13 +100,4 @@
   </div>
   <%}%>
 </div>
-<script>
-  (function () {
-    $(".owner").hover(function () {
-      $(".cancel-order").css({"visibility": "visible"});
-    }, function () {
-      $(".cancel-order").css({"visibility": "hidden"});
-    })
-  })()
-</script>
 <% include footer %>

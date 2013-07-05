@@ -1,16 +1,18 @@
-﻿html{color:#000;background:#FFF}
-body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0}
-table{border-collapse:collapse;border-spacing:0}
-fieldset,img{border:0}
-address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal}
-ol,ul{list-style:none}caption,th{text-align:left}
-h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal}
-q:before,q:after{content:''}abbr,acronym{border:0;font-variant:normal}
-sup{vertical-align:text-top}
-sub{vertical-align:text-bottom}
-input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit}
-input,textarea,select{*font-size:100%}
-legend{color:#000}
+﻿html { color: #000; background: #FFF }
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, textarea, p, blockquote, th, td { margin: 0; padding: 0 }
+table { border-collapse: collapse; border-spacing: 0 }
+fieldset, img { border: 0 }
+address, caption, cite, code, dfn, em, strong, th, var { font-style: normal; font-weight: normal }
+ol, ul { list-style: none }
+caption, th { text-align: left }
+h1, h2, h3, h4, h5, h6 { font-size: 100%; font-weight: normal }
+q:before, q:after { content: '' }
+abbr, acronym { border: 0; font-variant: normal }
+sup { vertical-align: text-top }
+sub { vertical-align: text-bottom }
+input, textarea, select { font-family: inherit; font-size: inherit; font-weight: inherit }
+input, textarea, select { *font-size: 100% }
+legend { color: #000 }
 
 html { background: #f1eee7 }
 html, body, h1, h2, h3, h4, h5, h6, p, a, em, img, strong, tt, dd, dl, dt, li, ol, ul, fieldset, form, label, legend, button, table, tr, th, td { margin: 0; padding: 0; border: 0 none; font-style: normal; font-size: 100%; font-family: inherit }
@@ -21,16 +23,16 @@ img { border: 0 none }
 
 input, label { vertical-align: middle }
 label { line-height: 30px; cursor: pointer }
-input, textarea { display: inline-block; padding: 0 5px; border: 1px solid #d3d3d3;  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1) inset; font-size: 12px; line-height: 31px; height: 31px; }
+input, textarea { display: inline-block; padding: 0 5px; border: 1px solid #d3d3d3; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1) inset; font-size: 12px; line-height: 31px; height: 31px; }
 textarea { overflow: auto; height: auto; vertical-align: top; resize: none; padding: 5px; line-height: 1.5em }
-.btn { display: inline-block; padding: 5px 10px; width: auto; min-height: 32px; border: 0; background: #c02116; color: #fff; vertical-align: top; text-align: center; font-weight: 700; font-size: 14px; cursor: pointer ;}
+.btn { display: inline-block; padding: 5px 10px; width: auto; min-height: 32px; border: 0; background: #c02116; color: #fff; vertical-align: top; text-align: center; font-weight: 700; font-size: 14px; cursor: pointer; }
 .btn:hover { background: #AA2105; color: #fff; text-decoration: none; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3) }
-.btn:focus, .btn:active { border: 0;  text-decoration: none }
+.btn:focus, .btn:active { border: 0; text-decoration: none }
 
 a { outline: 0 none; color: #c02116; text-decoration: none }
 a:focus { outline: 0 none }
 a:hover, a:active { outline: 0 none; text-decoration: underline }
-body { position: relative; color: #333; font-weight: normal; line-height: 20px;}
+body { position: relative; color: #333; font-weight: normal; line-height: 20px; }
 .clearfix { zoom: 1; _height: 1px }
 .clearfix:after { clear: both; display: block; visibility: hidden; height: 0; content: "." }
 .hide { display: none }
@@ -61,7 +63,7 @@ body { position: relative; color: #333; font-weight: normal; line-height: 20px;}
 .title { margin: 25px auto; width: 190px; height: 64px; background: url(../img/logo.png) no-repeat }
 .title span { display: none }
 
-.auth_form { z-index: 2;position: absolute;left:50%;top:50%;margin-left:-125px;margin-top:185px;padding: 10px 20px 20px 20px; width: 200px; background: #fff; font-size: 16px;  box-shadow: 0 0 41px rgba(0, 0, 0, .3),0 4px 0 rgba(255, 255, 255, .8),0 5px 0 rgba(100, 100, 100, 0.4),0 8px 0 rgba(255, 255, 255, .4),inset 0 0 5px rgba(255, 255, 255, .1); }
+.auth_form { z-index: 2; position: absolute; left: 50%; top: 50%; margin-left: -125px; margin-top: 185px; padding: 10px 20px 20px 20px; width: 200px; background: #fff; font-size: 16px; box-shadow: 0 0 41px rgba(0, 0, 0, .3), 0 4px 0 rgba(255, 255, 255, .8), 0 5px 0 rgba(100, 100, 100, 0.4), 0 8px 0 rgba(255, 255, 255, .4), inset 0 0 5px rgba(255, 255, 255, .1); }
 .auth_form a { font-size: 14px; line-height: 30px }
 .auth_form h1 { font-size: 24px; line-height: 2em; margin-bottom: 10px; text-align: center; font-weight: bold; }
 .auth_form .item input { width: 186px; }
@@ -78,7 +80,7 @@ body { position: relative; color: #333; font-weight: normal; line-height: 20px;}
 .nav li a:hover { background: #a81f13; color: #fff; text-decoration: none }
 .nav li a span { display: block; color: #999; font-size: 12px }
 .nav li.nav_item_my:hover #nav_my { display: block }
-#nav_my { position: absolute; top: 45px; right: 0; z-index: 100; display: none; width: 90px; border: 1px solid #ddd; background: #fff; background-clip: padding-box;  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1)}
+#nav_my { position: absolute; top: 45px; right: 0; z-index: 100; display: none; width: 90px; border: 1px solid #ddd; background: #fff; background-clip: padding-box; box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1) }
 #nav_my li { float: none; padding: 0 15px }
 #nav_my li:hover { background: #eee; color: #666 }
 #nav_my li a { margin-left: 0; padding: 0; color: #333; font-weight: normal; line-height: 2em }
@@ -159,19 +161,20 @@ body { position: relative; color: #333; font-weight: normal; line-height: 20px;}
 .buy-btn { margin: 0 auto; padding: 3px 5px; height: 30px; background: #c63a3a; color: #fff; text-align: center; font-weight: bold; line-height: 30px }
 .buy-btn:hover { background: #84201f; cursor: pointer }
 
-.today_null {}
-.today_null .txt { padding: 15px 0 20px 135px; background: #fff url('../img/empty.gif') no-repeat 10px 5px ;}
-.today_null .txt h3{font-size: 30px; line-height: 30px; margin-bottom: 20px;}
-#today-list { width: 55% }
-.cancel-order { visibility: hidden; }
-#today-analytics { float: right; width: 40% }
+.today_null { }
+.today_null .txt { padding: 15px 0 20px 135px; background: #fff url('../img/empty.gif') no-repeat 10px 5px; }
+.today_null .txt h3 { font-size: 30px; line-height: 30px; margin-bottom: 20px; }
+
+#today-list { width: 62% }
+#today-analytics { float: right; width: 33% }
 .today-tb { float: left }
 .today-tb td, .today-tb th { padding: 3px 10px; border: 1px solid #ccc }
-.today-tb tr th { padding: 7px 5px; background: url(../img/me.gif) repeat; font-weight: bold; font-size: 15px }
+.today-tb tr th { padding: 5px 10px; background: url(../img/me.gif) repeat; font-weight: bold; font-size: 15px }
 .today-tb .name { overflow: hidden; width: 80px; max-width: 60px }
 .today-tb .luck { padding: 0; width: 100px }
 .today-tb .luck .bar { padding-right: 4px; padding-left: 1px; background: #690; color: #fff; text-align: center; font-size: 11px }
-.today-tb .total { width: 40px; text-align: right }
+.today-tb .total {text-align: right }
+
 .today-tb tbody tr:hover td { background: #fff59b; color: #000 }
 .today-tb tbody tr.me td.name { border-color: #fff; background: green; color: #fff }
 .today-tb tbody td.food ul { list-style-type: none }
@@ -196,4 +199,16 @@ body { position: relative; color: #333; font-weight: normal; line-height: 20px;}
 #confirm-list .btn { position: absolute; right: 30px; margin-top: -5px }
 #confirm-list .total { font-weight: bold; font-size: 16px }
 .timeout { color: red }
-.fuck-ie6, .tip { margin: 20px auto 10px; padding: 6px 10px; background: #fff59b; text-align: center;font-size: 14px;}
+.fuck-ie6, .tip { margin: 20px auto 10px; padding: 6px 10px; background: #fff59b; text-align: center; font-size: 14px; }
+
+table.data thead th, table.data tbody td { padding: 5px 4px 4px 6px; }
+table.data thead th { text-align: left; font-size: 12px; font-weight: bold; border-right: 1px solid #ccc; border-top: 1px solid #ddd; border-bottom: 2px solid #ccc; text-shadow: 0px 1px 0px #fff; background: #f5f5f5;
+    background: -moz-linear-gradient(top, #f5f5f5 0%, #e2e2e2 100%); background: -webkit-linear-gradient(top, #f5f5f5 0%, #e2e2e2 100%); background: -ms-linear-gradient(top, #f5f5f5 0%, #e2e2e2 100%); background: linear-gradient(top, #f5f5f5 0%, #e2e2e2 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#e2e2e2', GradientType=0); }
+table.data tbody td { text-align: left; font-size: 12px; font-weight: normal; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc; }
+table.data thead th.last, table.data tbody td.last { border-right: none; }
+table.data tbody td.type-recharge { color: #0aa31c; font-weight: bold; }
+table.data tbody td.type-pay { color: #c02116; font-weight: bold; }
+table.data tbody td.txtr { text-align: right; }
+table.data tbody td.describe { color: #888; }
+

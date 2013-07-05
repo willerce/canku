@@ -1,0 +1,50 @@
+<% include ../header %>
+<div class="wap columns clearfix">
+  <div class="left">
+    <h1 class="page-title">帐户余额</h1>
+    <section class="main clearfix">
+      <div class="inner">
+        <p>当前账户余额: <%=(parseFloat(user.balance || 0)).toFixed(2)%>元</p>
+      </div>
+      <table id="balance-log" class="data" width="100%" border="0" cellspacing="0" cellpadding="5">
+        <thead>
+        <tr>
+          <th>时间</th>
+          <th>类型</th>
+          <th>数额</th>
+          <th>余额</th>
+          <th class="last">描述</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% balances.forEach(function(balance){ %>
+        <tr>
+          <td><%=balance.created%></td>
+          <td>
+            <% if (balance.type === "recharge") { %>
+            冲值
+            <% } else if(balance.type === "pay"){%>
+            消费
+            <% } %>
+          </td>
+          <td class="txtr type-<%=balance.type%>"><%=balance.amount%></td>
+          <td class="txtr"><%=balance.balance%></td>
+          <td class="last describe"><%-balance.describe%></td>
+        </tr>
+        <%})%>
+        </tbody>
+      </table>
+      <div></div>
+    </section>
+  </div>
+  <div class="right">
+    <div class="block">
+      <ul class="setting">
+        <li><a href="/user/order">› 我的订单</a></li>
+        <li><a href="/user/balance">› 账户余额</a></li>
+        <li><a href="/user/account">› 账户设置</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<% include ../footer %>

@@ -20,14 +20,9 @@
           <% if(i==0&item.order.length==1){%>
           <td class="total-td">共计 <%=item.total%> 元</td>
           <td class="meta-td">无备注</td>
-          <!--<td class="action-td"><input type="button" class="btn again" value="再买一次！"
-                                       onclick="javascript:(alert('抱歉，此功能暂未开放！'))"></td>-->
           <%}else if(i==0&item.order.length>1){%>
           <td rowspan="<%=item.order.length%>" class="total-td">共计 <%=item.total%> 元</td>
           <td rowspan="<%=item.order.length%>" class="meta-td">无备注</td>
-          <!--<td rowspan="<%=item.order.length%>" class="action-td"><input type="hidden" id="order-<%=item._id%>"
-                                                                        value="<%=item._id%>"> <input
-                  type="button" class="btn" value="再买一次！" onclick="javascript:(alert('抱歉，此功能暂未开放！'))"></td>-->
           <%}%>
         </tr>
         <%}%>
@@ -39,8 +34,9 @@
   <div class="right">
     <div class="block">
       <ul class="setting">
-        <li><a href="/user/order">› 历史订单</a></li>
-		<li><a href="/user/account">› 帐户设置</a></li>
+        <li><a href="/user/order">› 我的订单</a></li>
+        <li><a href="/user/balance">› 账户余额</a></li>
+        <li><a href="/user/account">› 账户设置</a></li>
       </ul>
     </div>
   </div>

@@ -1,0 +1,30 @@
+<% include ../header%>
+<div class="wap columns clearfix">
+  <h1 class="page-title">付款</h1>
+  <section class="main clearfix inner">
+    <div class="today_order">
+      <p>当前账户余额： <%=(parseFloat(user.balance || 0)).toFixed(2)%> 元</p>
+      <br>
+
+      <p>你于 <b><%=order.time%></b> 在 <a target="_blank" href="/shop/<%=order.shop_id%>"><%=order.shop_name%></a> 购买了总价为
+        <%=order.total%>元的美食。</p>
+      <br>
+      <ul style="margin-left: 30px;">
+        <% order.order.forEach(function(food){ %>
+        <li>› <%=food.name%> x <%=food.num%> 份 = <%=food.price%>元</li>
+        <%})%>
+      </ul>
+      <form action="/pay/submit_pay" method="post" style="margin: 20px 0;">
+        <input type="hidden" name="order_id" value="<%=order._id%>"/>
+        <button class="btn btn-mini">现在付款</button>
+      </form>
+    </div>
+  </section>
+</div>
+<script type="text/javascript">
+  $('form .btn').click(function () {
+    $(this).attr('disabled', "true")
+    $(this).parent().submit();
+  });
+</script>
+<% include ../footer%>

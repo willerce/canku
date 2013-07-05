@@ -1,0 +1,14 @@
+<% include ../header%>
+<div class="wap columns clearfix">
+  <h1 class="page-title">付款结果</h1>
+  <section class="main clearfix inner">
+    <h3>
+      <%if(result=="success") {%>
+      支付成功，点击返回<a href="/today">今日订单</a>
+      <%}%>
+    </h3>
+
+    <p>当前账户余额： <%=(parseFloat(user.balance || 0)).toFixed(2)%> 元</p>
+  </section>
+</div>
+<% include ../footer%>

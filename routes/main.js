@@ -19,20 +19,20 @@ exports.today = function (req, res, next) {
   var h = (new Date(util.getUTC8Time()).getHours());
   var start_t = '';
   var end_t = '';
-  if(h<15){
+  if (h < 15) {
     start_t = dateformat(new Date(), 'yyyy-mm-dd ') + "00:00:00";
     end_t = dateformat(new Date(), 'yyyy-mm-dd ') + "15:00:00";
-  }else{
+  } else {
     start_t = dateformat(new Date(), 'yyyy-mm-dd ') + "15:00:00";
     end_t = dateformat(new Date(new Date().getTime() + 24 * 60 * 60 * 1000), 'yyyy-mm-dd ') + "00:00:00";
   }
 
   //设置时间范围
-  db.order.find({time:{$gt:start_t, $lt:end_t}}).toArray(function (err, orders) {
+  db.order.find({time: {$gt: start_t, $lt: end_t}}).toArray(function (err, orders) {
     if (!err) {
 
       if (orders.length == 0) {
-        res.render('today', { error:'null'});
+        res.render('today', { error: 'null'});
         return;
       }
 
@@ -46,14 +46,14 @@ exports.today = function (req, res, next) {
         //比较运气值，找到比较差的那个
         if (order.luck <= group[shop_id].minLuck.luck) {
           if (!order.canceled || //如果订单没被取消
-            orders.filter(function(o){//或者[订单所有者[在今天有[没取消的订单]]]
-            return o.user_name==order.user_name && !o.canceled
-          }).length){
+            orders.filter(function (o) {//或者[订单所有者[在今天有[没取消的订单]]]
+              return o.user_name == order.user_name && !o.canceled
+            }).length) {
             group[shop_id].minLuck = order;
           }
         }
 
-        if(!order.canceled){
+        if (!order.canceled) {
           //累计这个店铺订单的总价
           group[shop_id].totalPrice += order.total;
 
@@ -64,22 +64,22 @@ exports.today = function (req, res, next) {
             group[shop_id].totalNum += parseInt(order.order[j].num);
 
             if (group[shop_id].analytics[order.order[j].id] == undefined) {
-              group[shop_id].analytics[order.order[j].id] = {name:order.order[j].name, num:parseFloat(orders[i].order[j].num)};
+              group[shop_id].analytics[order.order[j].id] = {name: order.order[j].name, num: parseFloat(orders[i].order[j].num)};
             } else {
               group[shop_id].analytics[order.order[j].id].num = parseFloat(group[shop_id].analytics[order.order[j].id].num) + parseFloat(order.order[j].num);
             }
           }
           //统计各种图片菜单点餐项
-          for(var j in order.picmenu){
-            group[shop_id].totalNum ++;
-            
+          for (var j in order.picmenu) {
+            group[shop_id].totalNum++;
+
           }
         }
         i++;
 
         //如果已经循环完成，则渲染
         if (orders.length == i)
-          res.render('today', { group:group, error:null, time : "h:" + h + ", start_t" + start_t + ", end_t" + end_t });
+          res.render('today', { group: group, error: null, time: "h:" + h + ", start_t" + start_t + ", end_t" + end_t });
         else//否则继续进行循环
           forEach(i);
       }
@@ -95,14 +95,14 @@ exports.today = function (req, res, next) {
 
         //不存在这个店铺
         if (!group[shop_id]) {
-          db.shop.findOne({'_id':db.ObjectID.createFromHexString(shop_id)}, function (err, shop) {
+          db.shop.findOne({'_id': db.ObjectID.createFromHexString(shop_id)}, function (err, shop) {
             group[shop_id] = {
-              shop:shop,
-              totalPrice:0,
-              totalNum:0,
-              minLuck:{luck:100},
-              analytics:{},
-              orders:[]
+              shop: shop,
+              totalPrice: 0,
+              totalNum: 0,
+              minLuck: {luck: 100},
+              analytics: {},
+              orders: []
             };
             //统计金额，以及数量
             analytics(shop_id, order, i);
@@ -117,7 +117,7 @@ exports.today = function (req, res, next) {
       forEach(0);
 
     } else {
-      res.render('today', { eror:'error' });
+      res.render('today', { eror: 'error' });
     }
   })
 };
@@ -126,7 +126,7 @@ exports.today = function (req, res, next) {
 exports.index = function (req, res, next) {
   db.shop.find().toArray(function (err, shops) {
     if (!err) {
-      res.render('index', {'shops':shops})
+      res.render('index', {'shops': shops})
     } else {
       next();
     }
@@ -135,11 +135,11 @@ exports.index = function (req, res, next) {
 
 // GET URL: /shop/_id    [5057458f9fc93f6001000001]
 exports.shop = function (req, res, next) {
-  db.shop.findOne({'_id':db.ObjectID.createFromHexString(req.params.id)}, function (err, shop) {
+  db.shop.findOne({'_id': db.ObjectID.createFromHexString(req.params.id)}, function (err, shop) {
     if (!err) {
       //获取今天的星期
       var week = util.getUTC8Day().toString();
-      db.food.find({'shop_id':req.params.id, week:{$in:['-1', week]}}).sort({category:1}).toArray(function (err, foods) {
+      db.food.find({'shop_id': req.params.id, week: {$in: ['-1', week]}}).sort({category: 1}).toArray(function (err, foods) {
         if (!err) {
 
           //进行分组处理
@@ -150,7 +150,7 @@ exports.shop = function (req, res, next) {
               var index = category.split('#');
               if (!group[index[0]]) {
                 //不存在这个分类，需要创建这个数组
-                group[index[0]] = {'name':index[1], 'foods':[]}
+                group[index[0]] = {'name': index[1], 'foods': []}
               }
 
               //向该分类推入这个商品
@@ -161,19 +161,19 @@ exports.shop = function (req, res, next) {
             }
           }
           //检查有没有图片菜单
-          (function(cb){
-            if(shop.picmenu){
+          (function (cb) {
+            if (shop.picmenu) {
               shop.picmenu = "data:image/jpeg;base64," + shop.picmenu.buffer.toString('base64');
               cb();
-            }else{
-              path.exists(path.join(__dirname, '..', 'public', 'picmenu' + req.params.id + '.jpg'), function (exists){
-                shop.picmenu = exists ? '/picmenu' + req.params.id + '.jpg': '';
+            } else {
+              path.exists(path.join(__dirname, '..', 'public', 'picmenu' + req.params.id + '.jpg'), function (exists) {
+                shop.picmenu = exists ? '/picmenu' + req.params.id + '.jpg' : '';
                 //页面渲染
                 cb();
               });
             }
-          })(function(err){
-            res.render('shop', {'shop':shop, 'group':group});
+          })(function (err) {
+            res.render('shop', {'shop': shop, 'group': group});
           });
         } else {
           console.log('获取店铺出错了，ID是：' + req.params.id + ":error" + err);
@@ -195,7 +195,6 @@ exports.submit_order = function (req, res) {
 
   //获取订单
   var order_list = JSON.parse(req.body.list);
-  var picmenu = JSON.parse(req.body.picmenu);
   var shop_id = req.body.shop_id;
   var shop_name = req.body.shop_name;
 
@@ -206,17 +205,17 @@ exports.submit_order = function (req, res) {
 
   //插入订单
   db.order.insert({
-      shop_id:shop_id, 
-      shop_name:shop_name, 
-      user_id:req.session.user._id, 
-      user_name:req.session.user.name, 
-      time:util.getUTC8Time("YYYY-MM-DD HH:mm:ss"), 
-      total:total, 
-      order:order_list, 
-      picmenu:picmenu, 
-      luck:luck,
-      canceled: false
-    }, function (err, result) {
+    shop_id: shop_id,
+    shop_name: shop_name,
+    user_id: req.session.user._id,
+    user_name: req.session.user.name,
+    time: util.getUTC8Time("YYYY-MM-DD HH:mm:ss"),
+    total: total,
+    order: order_list,
+    luck: luck,
+    canceled: false,
+    payStatus: 'deafult'
+  }, function (err, result) {
     if (!err) {
       console.log(result);
       res.send('{"result":"success","luck":"' + luck + '"}');
@@ -229,7 +228,7 @@ exports.submit_order = function (req, res) {
 
 exports.get_shop = function (req, res) {
   var _id = req.query["id"];
-  db.shop.findOne({'_id':db.ObjectID.createFromHexString(_id)}, function (err, result) {
+  db.shop.findOne({'_id': db.ObjectID.createFromHexString(_id)}, function (err, result) {
     if (!err) {
       res.send(JSON.stringify(result));
     }
@@ -239,5 +238,5 @@ exports.get_shop = function (req, res) {
 // URL: /404
 exports.pageNotFound = function (req, res) {
   console.log('404 handler..');
-  res.render('404', {status:404, title:'页面不存在'});
+  res.render('404', {status: 404, title: '页面不存在'});
 };

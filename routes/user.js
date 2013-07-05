@@ -11,6 +11,7 @@ var dateformat = require('dateformat');
 
 db.bind('order');
 db.bind('user');
+db.bind('balance_logs');
 
 exports.login = function (req, res) {
   if (req.method == "GET") {
@@ -109,11 +110,11 @@ exports.register = function (req, res) {
 
             // 向数据库保存用户的数据，并进行 session 保存      /*添加管理权限字段 isAdmin canOperateShop*/
             db.user.insert({
-              'name': name, 
-              'email': email, 
-              reg_time: reg_time, 
-              'password': password, 
-              'isAdmin': email == config.admin_user_email, 
+              'name': name,
+              'email': email,
+              'reg_time': reg_time,
+              'password': password,
+              'isAdmin': email == config.admin_user_email,
               'canOperateShop': false
             }, function (err, user) {
               if (!err && user && user.length > 0) {
@@ -206,6 +207,7 @@ exports.auth_admin = function (req, res, next) {
     });
   }
 }
+
 //验证用户是否是超级管理员，只有超级管理员才有删除用户，改变用户权限的权限
 exports.auth_super_admin = function (req, res, next) {
   if (req.session.user) {
@@ -215,34 +217,7 @@ exports.auth_super_admin = function (req, res, next) {
       return res.render('note', {title: '权限不够'});
     }
   }
-  // } else {
-  //   var cookie = req.cookies[config.auth_cookie_name];
-  //   if (!cookie) {
-  //     return res.redirect(config.login_path);
-  //   }
-
-  //   var auth_token = util.decrypt(cookie, config.session_secret);
-  //   var auth = auth_token.split('\t');
-  //   var user_name = auth[0];
-
-  //   db.user.findOne({'name':user_name}, function (err, user) {
-  //     if (!err && user) {
-  //       req.session.user = user;
-  //       if (req.session.user.name != 'xx') {
-  //         if( user.isAdmin ){
-  //           return next()
-  //         }else{
-  //           return res.render('note',{title:'权限不够'})
-  //         }          
-  //       }
-  //     }
-  //     else {
-  //       return res.redirect(config.login_path);
-  //     }
-  //   });
-  // }
 }
-
 
 exports.logout = function (req, res) {
   req.session.destroy();
@@ -369,9 +344,20 @@ exports.account = function (req, res) {
       });
     }
   }
-  ;
 };
 
+// URL /user/balance
+exports.balance = function (req, res) {
+
+  db.user.findOne({'name': req.session.user.name}, function (err, user) {
+    if (!err) {
+      db.balance_logs.find({user_id: req.session.user._id.toString()}).sort({created: -1}).toArray(function (err, balances) {
+        res.render("user/balance", {user: user, balances: balances});
+      });
+    }
+  });
+
+};
 
 exports.forgetPassword = function (req, res) {
   if (req.method == 'GET') {
@@ -428,15 +414,13 @@ exports.forgetPassword = function (req, res) {
   }
 }
 
-
 // URL: /user/order/delete/:id
-
 exports.deleteOrder = function (req, res) {
   id = req.params.id;
-  db.order.findOne({"_id": db.ObjectID.createFromHexString(id)}, function(err, order){
+  db.order.findOne({"_id": db.ObjectID.createFromHexString(id)}, function (err, order) {
     if (err) return res.send(err);
     if (order.user_name == req.session.user.name) {
-      db.order.update({"_id": db.ObjectID.createFromHexString(id)}, {"$set": {"canceled":"true"}}, function(err, result){
+      db.order.update({"_id": db.ObjectID.createFromHexString(id)}, {"$set": {"canceled": "true"}}, function (err, result) {
         if (err) return res.send("取消订单失败");
         res.redirect('/today');
       });
