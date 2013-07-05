@@ -53,36 +53,39 @@ exports.submit_pay = function (req, res) {
         }
 
         //---------开始进行付款流程------------------
-        db.user.findOne({"_id": db.ObjectID.createFromHexString(req.session.user._id)}, function (err, user) {
-          //添加余额变动记录
-          var balance_log = {
-            created: util.getUTC8Time("YYYY-MM-DD HH:mm:ss"),
-            user_id: user._id.toString(),
-            type: 'pay',//充值
-            amount: parseFloat(0 - order.total).toFixed(2),
-            balance: (parseFloat(user.balance || 0) + parseFloat(0 - order.total)).toFixed(2),
-            describe: "支付了 <a target=\"_blank\" href=\"/shop/" + order.shop_id + "\">" + order.shop_name + "</a> 的订单"
-          };
+        db.user.findOne({"name": req.session.user.name}, function (err, user) {
+          if (!err) {
 
-          db.balance_logs.insert(balance_log, function (err, result) {
-            if (!err) {
-              //修改用户帐户余额
-              db.user.update({"_id": user._id}, {'$set': {"balance": balance_log.balance}}, function (err) {
-                if (!err) {
-                  //修改订单支付状态
-                  db.order.update({"_id": order._id}, {'$set': {"payStatus": "paid"}}, function (err) {
-                    if (!err) {
-                      res.redirect('/pay/submit_pay?result=success');
-                    } else {
-                      next();
-                    }
-                  });
-                } else {
-                  next();
-                }
-              });
-            }
-          })
+            //添加余额变动记录
+            var balance_log = {
+              created: util.getUTC8Time("YYYY-MM-DD HH:mm:ss"),
+              user_id: user._id.toString(),
+              type: 'pay',//充值
+              amount: parseFloat(0 - order.total).toFixed(2),
+              balance: (parseFloat(user.balance || 0) + parseFloat(0 - order.total)).toFixed(2),
+              describe: "支付了 <a href=\"/shop/" + order.shop_id + "\">" + order.shop_name + "</a> 的订单 › <a href=\"/user/order#order-" + order._id + "\">查看订单详情</a>"
+            };
+
+            db.balance_logs.insert(balance_log, function (err, result) {
+              if (!err) {
+                //修改用户帐户余额
+                db.user.update({"_id": user._id}, {'$set': {"balance": balance_log.balance}}, function (err) {
+                  if (!err) {
+                    //修改订单支付状态
+                    db.order.update({"_id": order._id}, {'$set': {"payStatus": "paid"}}, function (err) {
+                      if (!err) {
+                        res.redirect('/pay/submit_pay?result=success');
+                      } else {
+                        next();
+                      }
+                    });
+                  } else {
+                    next();
+                  }
+                });
+              }
+            })
+          }
         });
       } else {
         res.send({"err": "application error"});

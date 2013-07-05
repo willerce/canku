@@ -6,7 +6,7 @@
   <div class="left">
     <section class="fav clearfix">
       <% orders.forEach(function(item){ %>
-      <table class="myorder" cellpadding="0" cellspacing="0">
+      <table class="myorder" cellpadding="0" cellspacing="0" id="order-<%=item._id%>">
         <tbody>
         <tr class="hd-row">
           <td colspan="6"><%=item.time%> 在<a href="/shop/<%=item.shop_id%>"> <%=item.shop_name%> </a>购买的清单
