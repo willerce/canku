@@ -8,7 +8,7 @@
   <% for(var key in group){ var orders = group[key];%>
   <div id="shop-<%=orders.shop._id%>">
     <h1 class="page-title">
-      <strong><%=orders.shop.name%></strong>
+      <strong><a href="/shop/<%=orders.shop._id%>"><%=orders.shop.name%></a> </strong>
       <span class="shop_tel">电话：<%=orders.shop.tel%></span>
       <span class="shop_address">地址：<%=orders.shop.address%></span>
       <%if(orders.minLuck.user_name){%>
@@ -43,16 +43,16 @@
               <div class="bar" style="width:<%=order.luck*0.9%>px"><%=order.luck%></div>
             </td>
             <td>
-            <% if(order.canceled){ %>
+              <% if(order.canceled){ %>
               <span class="text-error">已取消</span>
-            <% } else if (order.payStatus === "paid") { %>
+              <% } else if (order.payStatus === "paid") { %>
               <span>已支付</span>
-            <% } else if(order.user_name == locals.session.user.name){%>
+              <% } else if(order.user_name == locals.session.user.name){%>
               <a href="/pay/item?order_id=<%= order._id %>" class="cancel-order">支付</a> |
               <a href="/user/order/delete/<%= order._id %>" class="cancel-order">取消</a>
-            <% } else {%>
+              <% } else {%>
               <span>未支付</span>
-            <% } %>
+              <% } %>
             </td>
           </tr>
           <%})%>
