@@ -1,0 +1,32 @@
+<% include ../header %>
+<h2>【<%=user.name%>】余额变动记录</h2>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>时间</th>
+    <th>类型</th>
+    <th>数额</th>
+    <th>余额</th>
+    <th class="last">描述</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% balances.forEach(function(balance){ %>
+  <tr>
+    <td><%=balance.created%></td>
+    <td>
+      <% if (balance.type === "recharge") { %>
+      冲值
+      <% } else if(balance.type === "pay"){%>
+      消费
+      <% } %>
+    </td>
+    <td class="txtr type-<%=balance.type%>"><%=balance.amount%></td>
+    <td class="txtr"><%=balance.balance%></td>
+    <td class="last describe"><%-balance.describe%></td>
+  </tr>
+  <%})%>
+  </tbody>
+</table>
+<% include ../footer %>

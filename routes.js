@@ -56,6 +56,7 @@ module.exports = function (app) {
   app.get('/admin/user/orders/:id', user.auth_admin, user.auth_super_admin, admin.user_orders);
   app.get('/admin/user/add_balance', user.auth_admin, user.auth_super_admin, admin.user_add_balance);
   app.post('/admin/user/add_balance', user.auth_admin, user.auth_super_admin, admin.user_add_balance);
+  app.get('/admin/user/balance', user.auth_admin, user.auth_super_admin, admin.balance);
   app.get('/admin/user/delete/:id', user.auth_admin, user.auth_super_admin, admin.user_delete);
   app.get('/admin/user/isAdmin/:id', user.auth_admin, user.auth_super_admin, admin.user_isAdmin);
   app.get('/admin/user/canOperateShop/:id', user.auth_admin, user.auth_super_admin, admin.user_operateShop);

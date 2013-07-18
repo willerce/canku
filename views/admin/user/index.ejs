@@ -9,7 +9,8 @@
     <th>注册时间</th>
     <th>超级管理员</th>
     <th>店铺管理员</th>
-    <th>操作</th>
+    <th>账户余额</th>
+    <th>删除</th>
   </tr>
   </thead>
   <tbody>
@@ -36,7 +37,10 @@
       <% } %>
     </td>
     <td>
-      <a href="/admin/user/add_balance?user_id=<%=user._id%>" class="btn btn-primary btn-small" >冲值</a>
+      <a href="/admin/user/balance?user_id=<%=user._id%>" class="btn btn-primary btn-small" >余额变动记录</a>
+      <a href="/admin/user/add_balance?user_id=<%=user._id%>" class="btn btn-primary btn-small" >充值</a>
+    </td>
+    <td>
       <a class="btn btn-danger btn-small" id="deleteUser" >删除</a>
     </td>
   </tr>

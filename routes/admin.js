@@ -198,7 +198,7 @@ exports.user_add_balance = function (req, res) {
 
   } else if (req.method === "POST") {
 
-    if(!req.session.user.isAdmin){
+    if (!req.session.user.isAdmin) {
       return
     }
 
@@ -237,6 +237,15 @@ exports.user_add_balance = function (req, res) {
 
 };
 
+exports.balance = function (req, res) {
+  db.user.findOne({'_id': db.ObjectID.createFromHexString(req.query['user_id'])}, function (err, user) {
+    if (!err) {
+      db.balance_logs.find({user_id: req.query['user_id']}).sort({created: -1}).toArray(function (err, balances) {
+        res.render("admin/user/balance", {title: "用户记录", user: user, balances: balances});
+      });
+    }
+  });
+};
 
 exports.user_isAdmin = function (req, res) {
   var id = req.params.id;
