@@ -39,7 +39,7 @@ exports.index = function (req, res, next) {
   });
 };
 
-// GET URL: /shop/_id    [5057458f9fc93f6001000001]
+// GET URL: /shop/5057458f9fc93f6001000001
 exports.shop = function (req, res, next) {
   db.shop.findOne({'_id': db.ObjectID.createFromHexString(req.params.id)}, function (err, shop) {
     if (!err) {
@@ -132,16 +132,6 @@ exports.submit_order = function (req, res) {
   })
 };
 
-exports.get_shop = function (req, res) {
-  var _id = req.query["id"];
-  db.shop.findOne({'_id': db.ObjectID.createFromHexString(_id)}, function (err, result) {
-    if (!err) {
-      res.send(JSON.stringify(result));
-    }
-  });
-}
-
-
 // url: /pay
 exports.pay_item = function (req, res, next) {
 
@@ -165,6 +155,7 @@ exports.pay_item = function (req, res, next) {
 
 };
 
+// URL: /pay/submit_pay
 exports.submit_pay = function (req, res) {
   if (req.method == "GET") {
     var result = req.query['result'];
@@ -226,6 +217,7 @@ exports.submit_pay = function (req, res) {
   }
 }
 
+// URL: /login
 exports.login = function (req, res) {
   if (req.method == "GET") {
     //只要访问了登录页，就清除cookie
@@ -273,6 +265,16 @@ exports.login = function (req, res) {
   }
 };
 
+// URL: /logout
+exports.logout = function (req, res) {
+  req.session.destroy();
+  res.clearCookie(config.auth_cookie_name, {
+    path: '/'
+  });
+  res.redirect('/user/login');
+}
+
+// URL: /register
 exports.register = function (req, res) {
   if (req.method == "GET") {
     switch (req.query['tip']) {
@@ -421,7 +423,7 @@ exports.auth_admin = function (req, res, next) {
   }
 }
 
-//验证用户是否是超级管理员，只有超级管理员才有删除用户，改变用户权限的权限
+// 验证用户是否是超级管理员，只有超级管理员才有删除用户，改变用户权限的权限
 exports.auth_super_admin = function (req, res, next) {
   if (req.session.user) {
     if (req.session.user.isAdmin || req.session.user.email == config.admin_user_email) {
@@ -430,14 +432,6 @@ exports.auth_super_admin = function (req, res, next) {
       return res.render('note', {title: '权限不够'});
     }
   }
-}
-
-exports.logout = function (req, res) {
-  req.session.destroy();
-  res.clearCookie(config.auth_cookie_name, {
-    path: '/'
-  });
-  res.redirect('/user/login');
 }
 
 // URL /user/order

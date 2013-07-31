@@ -177,9 +177,9 @@ exports.user_delete = function (req, res) {
 };
 
 exports.user_orders = function (req, res) {
-  var id = req.params.id;
+  var user_id = req.query['user_id'];
   //获取当前用户的ID{user_id:req.session.user._id}
-  db.order.find({user_id: id}).sort({time: -1}).toArray(function (err, result) {
+  db.order.find({user_id: user_id}).sort({time: -1}).toArray(function (err, result) {
     if (!err) {
       res.render('admin/user/orders', {title: "用户订单", orders: result});
     }

@@ -4,7 +4,7 @@
 <table  class="table table-bordered">
   <tbody>
   <tr class="hd-row">
-    <td colspan="6">
+    <td colspan="4">
       <%=item.time%> 在<a href="/shop/<%=item.shop_id%>"> <%=item.shop_name%> </a>购买的清单
       <span>共计 <%=item.total%> 元</span>
     </td>
@@ -14,6 +14,14 @@
     <td class="shop_name-td"><%=item.order[i].name%></td>
     <td class="price-td"><%=item.order[i].price%>元</td>
     <td class="num-td"><%=item.order[i].num%>份</td>
+    <td>支付状态：<% if(item.canceled){ %>
+      <span>已取消</span>
+      <% } else if (item.payStatus === "paid") { %>
+      <span>已支付</span>
+      <% } else {%>
+      <span class="text-error">未支付</span>，
+      <a href="/pay/item?order_id=<%= item._id %>">支付链接</a>
+      <% } %></td>
   </tr>
   <%}%>
   </tbody>

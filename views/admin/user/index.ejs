@@ -7,8 +7,7 @@
     <th>邮箱</th>
     <th>余额</th>
     <th>注册时间</th>
-    <th>超级管理员</th>
-    <th>店铺管理员</th>
+    <th>权限</th>
     <th>账户余额</th>
     <th>删除</th>
   </tr>
@@ -24,20 +23,19 @@
     </td>
     <td>
       <% if(user.isAdmin) {%>
-      <a class="btn btn-warning btn-small Admin">撤销超级管理员</a>
+      <a class="btn btn-warning btn-small Admin">撤销超级管理</a>
       <% }else{ %>
-      <a class="btn btn-primary btn-small Admin">授予超级管理员</a>
+      <a class="btn btn-primary btn-small Admin">授予超级管理</a>
       <% } %>
-    </td>
-    <td>
       <% if(user.canOperateShop) {%>
-      <a class="btn btn-warning btn-small Shoper">撤销店铺管理员</a>
+      <a class="btn btn-warning btn-small Shoper">撤销店铺管理</a>
       <% }else{%>
-      <a class="btn btn-primary btn-small Shoper">授予店铺管理员</a>
+      <a class="btn btn-primary btn-small Shoper">授予店铺管理</a>
       <% } %>
     </td>
     <td>
-      <a href="/admin/user/balance?user_id=<%=user._id%>" class="btn btn-primary btn-small" >余额变动记录</a>
+      <a href="/admin/user/orders?user_id=<%=user._id%>" class="btn btn-primary btn-small" >查看订单</a>
+      <a href="/admin/user/balance?user_id=<%=user._id%>" class="btn btn-primary btn-small" >变动记录</a>
       <a href="/admin/user/add_balance?user_id=<%=user._id%>" class="btn btn-primary btn-small" >充值</a>
     </td>
     <td>
@@ -80,7 +78,7 @@
             that.text("撤销")
           }else{
             that.prev().text("false");
-            that.text("升级");
+            that.text("授予");
           }
         }
       })
@@ -102,7 +100,7 @@
             that.text("撤销")
           }else{
             that.prev().text("false");
-            that.text("升级");
+            that.text("授予");
           }
         }
       })

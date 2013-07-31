@@ -8,7 +8,6 @@ module.exports = function (app) {
   app.get('/', main.auth, main.index);
   app.get('/today', main.auth, main.today);
   app.get('/shop/:id', main.auth, main.shop);
-  app.get('/get_shop', main.auth, main.get_shop);
   app.post('/submit_order', main.auth, main.submit_order);
   app.get('/pay/item', main.auth, main.pay_item);
   app.get('/pay/submit_pay', main.auth, main.submit_pay);
@@ -40,7 +39,7 @@ module.exports = function (app) {
   app.get('/admin/food/delete/:id', main.auth_admin, admin.food_delete);
   app.post('/admin/food/edit/:id', main.auth_admin, admin.food_edit);
   app.get('/admin/user', main.auth_admin, main.auth_super_admin, admin.user_index);
-  app.get('/admin/user/orders/:id', main.auth_admin, main.auth_super_admin, admin.user_orders);
+  app.get('/admin/user/orders', main.auth_admin, main.auth_super_admin, admin.user_orders);
   app.get('/admin/user/add_balance', main.auth_admin, main.auth_super_admin, admin.user_add_balance);
   app.post('/admin/user/add_balance', main.auth_admin, main.auth_super_admin, admin.user_add_balance);
   app.get('/admin/user/balance', main.auth_admin, main.auth_super_admin, admin.balance);
