@@ -20,6 +20,11 @@
   <input type="hidden" name="amount" value="200">
   <span class="btn btn-primary" data-amount="200">充值￥200 元</span>
 </form>
+<form class="form-inline" action="" method="post">
+  <input type="hidden" name="user_id" value="<%=user._id%>">
+  <input type="number" class="input-small" name="amount" value="" placeholder="金额">
+  <span class="btn btn-primary" data-amount="200">充值</span>
+</form>
 <!-- Modal -->
 <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
@@ -38,7 +43,7 @@
   $("form span.btn").live('click', function () {
 
     var _this = $(this);
-    $('#amount').text($(this).attr('data-amount'));
+    $('#amount').text($(this).parent().find('[name="amount"]').val());
 
     $('#myModal').modal({
       keyboard: true,
